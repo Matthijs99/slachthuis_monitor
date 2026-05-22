@@ -35,7 +35,7 @@
           <span class="naam">{naamByCase.get(c.nr)}</span>
           <span class="datum">{c.datum}</span>
           <span class="boete">{c.boetebedrag ? `€ ${c.boetebedrag}` : '—'}</span>
-          <p class="samenvatting">{c.samenvatting}</p>
+          <span class="samenvatting">{c.samenvatting}</span>
         </a>
       </li>
     {/each}

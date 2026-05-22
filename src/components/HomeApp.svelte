@@ -22,13 +22,22 @@
 
   onMount(() => {
     filters = paramsToFilters(new URLSearchParams(window.location.search));
+    const onPop = () => {
+      filters = paramsToFilters(new URLSearchParams(window.location.search));
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
   });
 
   function setFilters(next: typeof filters) {
     filters = next;
     const qs = filtersToParams(next).toString();
     const url = qs ? `?${qs}` : window.location.pathname;
-    history.replaceState(null, '', url);
+    // Only push a new history entry when the URL actually changes — avoids
+    // stacking identical entries for rapid chip toggles that net to no-op.
+    if (url !== window.location.pathname + window.location.search) {
+      history.pushState(null, '', url);
+    }
   }
 
   let filteredCases = $derived(applyFilters(cases, filters));

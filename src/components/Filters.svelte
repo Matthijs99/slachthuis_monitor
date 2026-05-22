@@ -49,9 +49,11 @@
   <h3>Jaar</h3>
   <div class="years">
     <input type="number" min={yearMin} max={yearMax} value={filters.yearMin ?? ''} placeholder="vanaf"
+      aria-label="Jaar vanaf"
       oninput={e => setYearMin((e.target as HTMLInputElement).value)} />
     <span>–</span>
     <input type="number" min={yearMin} max={yearMax} value={filters.yearMax ?? ''} placeholder="tot"
+      aria-label="Jaar tot"
       oninput={e => setYearMax((e.target as HTMLInputElement).value)} />
   </div>
 
