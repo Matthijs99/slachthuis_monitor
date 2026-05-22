@@ -20,7 +20,8 @@ API = "https://api.pdok.nl/bzk/locatieserver/search/v3_1/free"
 
 
 def dedupe_key(slh: dict) -> str:
-    return f"{slh.get('naam', '')}|{slh.get('postcode_plaats') or ''}"
+    """Case-insensitive on postcode_plaats so 'De Hoef' and 'de Hoef' map to one key."""
+    return f"{slh.get('naam', '')}|{(slh.get('postcode_plaats') or '').lower()}"
 
 
 def build_query(slh: dict) -> str:

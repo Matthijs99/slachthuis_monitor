@@ -1,5 +1,5 @@
 {
-  "Agri 4+ B.V.|7131 PA Lichtenvoorde": {
+  "Agri 4+ B.V.|7131 pa lichtenvoorde": {
     "naam": "Agri 4+ B.V.",
     "adres": "Nijverheidsstraat 15",
     "postcode_plaats": "7131 PA Lichtenvoorde",
@@ -7,7 +7,7 @@
     "lon": 6.57826182,
     "matched": "Nijverheidsstraat 15, 7131PA Lichtenvoorde"
   },
-  "Amsterdam Meat Company Ameco B.V.|7325 WC Apeldoorn": {
+  "Amsterdam Meat Company Ameco B.V.|7325 wc apeldoorn": {
     "naam": "Amsterdam Meat Company Ameco B.V.",
     "adres": "Ecofactorij 29",
     "postcode_plaats": "7325 WC Apeldoorn",
@@ -15,7 +15,7 @@
     "lon": 6.03190148,
     "matched": "Ecofactorij 29, 7325WC Apeldoorn"
   },
-  "Ekro B.V.|7333 NP Apeldoorn": {
+  "Ekro B.V.|7333 np apeldoorn": {
     "naam": "Ekro B.V.",
     "adres": "Laan van Malkenschoten 100",
     "postcode_plaats": "7333 NP Apeldoorn",
@@ -23,7 +23,7 @@
     "lon": 5.97617132,
     "matched": "Laan van Malkenschoten 100, 7333NP Apeldoorn"
   },
-  "ESA B.V.|7332 BH Apeldoorn": {
+  "ESA B.V.|7332 bh apeldoorn": {
     "naam": "ESA B.V.",
     "adres": "Saba 9",
     "postcode_plaats": "7332 BH Apeldoorn",
@@ -31,7 +31,7 @@
     "lon": 5.98662872,
     "matched": "Saba 9, 7332BH Apeldoorn"
   },
-  "Exportslachterij J. Gosschalk en Zn. B.V.|8161 PM Epe": {
+  "Exportslachterij J. Gosschalk en Zn. B.V.|8161 pm epe": {
     "naam": "Exportslachterij J. Gosschalk en Zn. B.V.",
     "adres": "Oenerweg 2",
     "postcode_plaats": "8161 PM Epe",
@@ -39,7 +39,7 @@
     "lon": 5.99207025,
     "matched": "Oenerweg 2, 8161PM Epe"
   },
-  "Holland Vlees Service B.V.|6669 MX Dodewaard": {
+  "Holland Vlees Service B.V.|6669 mx dodewaard": {
     "naam": "Holland Vlees Service B.V.",
     "adres": "Voorenswei 8",
     "postcode_plaats": "6669 MX Dodewaard",
@@ -47,7 +47,7 @@
     "lon": 5.65036766,
     "matched": "Voorenswei 8, 6669MX Dodewaard"
   },
-  "G.J. Hutten en Zonen B.V.|8111 CW Heeten": {
+  "G.J. Hutten en Zonen B.V.|8111 cw heeten": {
     "naam": "G.J. Hutten en Zonen B.V.",
     "adres": "IJzerweg 1",
     "postcode_plaats": "8111 CW Heeten",
@@ -55,7 +55,7 @@
     "lon": 6.28753104,
     "matched": "IJzerweg 1, 8111CW Heeten"
   },
-  "International Meat Processing Services B.V.|3621 MX Breukelen": {
+  "International Meat Processing Services B.V.|3621 mx breukelen": {
     "naam": "International Meat Processing Services B.V.",
     "adres": "Keulschevaart 18",
     "postcode_plaats": "3621 MX Breukelen",
@@ -63,7 +63,7 @@
     "lon": 4.99491106,
     "matched": "Keulschevaart 18, 3621MX Breukelen"
   },
-  "Pali Geldrop B.V.|5663 PG Geldrop": {
+  "Pali Geldrop B.V.|5663 pg geldrop": {
     "naam": "Pali Geldrop B.V.",
     "adres": "Industriepark 10",
     "postcode_plaats": "5663 PG Geldrop",
@@ -71,7 +71,7 @@
     "lon": 5.55498635,
     "matched": "Industriepark 10, 5663PG Geldrop"
   },
-  "Slachterij/Grossierderij Wouters B.V.|1426 AS De Hoef": {
+  "Slachterij/Grossierderij Wouters B.V.|1426 as de hoef": {
     "naam": "Slachterij/Grossierderij Wouters B.V.",
     "adres": "De Hoef Westzijde 33",
     "postcode_plaats": "1426 AS De Hoef",
@@ -79,7 +79,7 @@
     "lon": 4.81272852,
     "matched": "de Hoef Westzijde 33, 1426AS de Hoef"
   },
-  "Slachterij Amstelland B.V.|1426 AS De Hoef": {
+  "Slachterij Amstelland B.V.|1426 as de hoef": {
     "naam": "Slachterij Amstelland B.V.",
     "adres": "de Hoef Westzijde 33",
     "postcode_plaats": "1426 AS De Hoef",
@@ -87,15 +87,7 @@
     "lon": 4.81272852,
     "matched": "de Hoef Westzijde 33, 1426AS de Hoef"
   },
-  "Slachterij Amstelland B.V.|1426 AS de Hoef": {
-    "naam": "Slachterij Amstelland B.V.",
-    "adres": "de Hoef Westzijde 33",
-    "postcode_plaats": "1426 AS de Hoef",
-    "lat": 52.20960675,
-    "lon": 4.81272852,
-    "matched": "de Hoef Westzijde 33, 1426AS de Hoef"
-  },
-  "Slachterij Erp B.V.|5469 DZ Erp": {
+  "Slachterij Erp B.V.|5469 dz erp": {
     "naam": "Slachterij Erp B.V.",
     "adres": "Franseweg 8",
     "postcode_plaats": "5469 DZ Erp",
@@ -103,7 +95,7 @@
     "lon": 5.61640059,
     "matched": "Franseweg 8, 5469DZ Erp"
   },
-  "Slachthuis Erp B.V.|5469 DZ Erp": {
+  "Slachthuis Erp B.V.|5469 dz erp": {
     "naam": "Slachthuis Erp B.V.",
     "adres": "Franseweg 8",
     "postcode_plaats": "5469 DZ Erp",
@@ -111,7 +103,7 @@
     "lon": 5.61640059,
     "matched": "Franseweg 8, 5469DZ Erp"
   },
-  "Vee- en Vleeshandel Beernink B.V.|7575 BW Oldenzaal": {
+  "Vee- en Vleeshandel Beernink B.V.|7575 bw oldenzaal": {
     "naam": "Vee- en Vleeshandel Beernink B.V.",
     "adres": "Kleibultweg 51",
     "postcode_plaats": "7575 BW Oldenzaal",
@@ -119,7 +111,7 @@
     "lon": 6.92017236,
     "matched": "Kleibultweg 51a, 7575BW Oldenzaal"
   },
-  "VION Apeldoorn B.V.|7333 NP Apeldoorn": {
+  "VION Apeldoorn B.V.|7333 np apeldoorn": {
     "naam": "VION Apeldoorn B.V.",
     "adres": "Laan van Malkenschoten 77",
     "postcode_plaats": "7333 NP Apeldoorn",
@@ -127,7 +119,7 @@
     "lon": 5.9753183,
     "matched": "Laan van Malkenschoten 77, 7333NP Apeldoorn"
   },
-  "VION Boxtel B.V.|5281 RM Boxtel": {
+  "VION Boxtel B.V.|5281 rm boxtel": {
     "naam": "VION Boxtel B.V.",
     "adres": "Boseind 10",
     "postcode_plaats": "5281 RM Boxtel",
@@ -135,7 +127,7 @@
     "lon": 5.32413419,
     "matched": "Boseind 10, 5281RM Boxtel"
   },
-  "VION Groenlo B.V.|7141 JH Groenlo": {
+  "VION Groenlo B.V.|7141 jh groenlo": {
     "naam": "VION Groenlo B.V.",
     "adres": "Den Sliem 8",
     "postcode_plaats": "7141 JH Groenlo",
@@ -143,7 +135,7 @@
     "lon": 6.62407495,
     "matched": "Den Sliem 8, 7141JH Groenlo"
   },
-  "Westfort Vleesproducten B.V.|3401 MZ IJsselstein": {
+  "Westfort Vleesproducten B.V.|3401 mz ijsselstein": {
     "naam": "Westfort Vleesproducten B.V.",
     "adres": "Kamerlingh Onneslaan 18",
     "postcode_plaats": "3401 MZ IJsselstein",
