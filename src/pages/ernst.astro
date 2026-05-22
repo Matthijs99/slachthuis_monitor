@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { loadData } from '../lib/data';
+
+const { cases } = loadData();
+
+const TIERS = [
+  {
+    n: 1, label: 'Laag',
+    description: 'Administratief, hygiëne zonder dier-impact, of kleine welzijnstekorten zonder lijden.',
+  },
+  {
+    n: 2, label: 'Midden',
+    description: 'Welzijn aangetast (overbezetting, vies of nat strooisel, ontbrekend drinkwater, slechte transportomstandigheden) — geen direct lijden tijdens de slacht.',
+  },
+  {
+    n: 3, label: 'Hoog',
+    description: 'Onnodig pijn of stress tijdens de slacht: te late nabedwelming, fixatiefout met loskomende dieren, herhaalde bedwelmingsfouten, overmatig gebruik van de elektrische prikker.',
+  },
+  {
+    n: 4, label: 'Zeer hoog',
+    description: 'Dier was bewust of levend tijdens halssnede of uitslachten; óf actief geweld (slaan, schoppen, slepen aan ketens); óf meermalen mislukte bedwelming met aanhoudend lijden.',
+  },
+] as const;
+
+// Pick one example case per tier — highest case-number with that tier
+const examples = TIERS.map(t => {
+  const matching = cases.filter(c => c.ernst === t.n).sort((a, b) => b.nr - a.nr);
+  return { ...t, example: matching[0] ?? null };
+});
+---
+<Layout title="Ernstgradering">
+  <h1>Ernstgradering</h1>
+  <p class="lede">
+    Elke bevinding is geclassificeerd op welzijnsimpact in vier tiers. Deze classificatie staat
+    los van het boetebedrag — de boete reflecteert het juridisch oordeel van de NVWA, de tier
+    reflecteert het effect op het dier.
+  </p>
+
+  <ol class="tiers">
+    {examples.map(t => (
+      <li class={`tier ernst-${t.n}`}>
+        <header>
+          <span class={`badge ernst-${t.n}`}>{t.n}</span>
+          <h2>{t.label}</h2>
+        </header>
+        <p>{t.description}</p>
+        {t.example && (
+          <blockquote>
+            <p>{t.example.samenvatting}</p>
+            <footer>— bevinding #{t.example.nr}, {t.example.datum}</footer>
+          </blockquote>
+        )}
+      </li>
+    ))}
+  </ol>
+</Layout>
+
+<style>
+  .lede { font-size: 1.05rem; max-width: 70ch; color: #333; }
+  .tiers { list-style: none; padding: 0; margin: 2rem 0 0; }
+  .tier { padding: 1rem 1.2rem; border-left: 6px solid #ccc; margin-bottom: 1.2rem; background: #fafafa; }
+  .tier.ernst-1 { border-left-color: #fde68a; }
+  .tier.ernst-2 { border-left-color: #fb923c; }
+  .tier.ernst-3 { border-left-color: #dc2626; }
+  .tier.ernst-4 { border-left-color: #7f1d1d; }
+  .tier header { display: flex; gap: 0.8rem; align-items: center; margin-bottom: 0.4rem; }
+  .tier h2 { margin: 0; font-size: 1.15rem; }
+  .badge { width: 2rem; height: 2rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: white; font-weight: 700; }
+  .badge.ernst-1 { background: #fde68a; color: #222; }
+  .badge.ernst-2 { background: #fb923c; }
+  .badge.ernst-3 { background: #dc2626; }
+  .badge.ernst-4 { background: #7f1d1d; }
+  blockquote { border-left: 3px solid #ccc; margin: 0.8rem 0 0; padding: 0.4rem 0.9rem; font-style: italic; color: #333; max-width: 70ch; }
+  blockquote footer { font-style: normal; font-size: 0.85rem; color: #666; margin-top: 0.3rem; }
+</style>

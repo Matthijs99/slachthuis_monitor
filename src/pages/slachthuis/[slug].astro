@@ -1,0 +1,100 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { loadData, parseFineCents, formatEUR, type Slaughterhouse } from '../../lib/data';
+
+export async function getStaticPaths() {
+  const { slaughterhouses } = loadData();
+  return slaughterhouses.map(s => ({
+    params: { slug: s.slug },
+    props: { slaughterhouse: s },
+  }));
+}
+
+type Props = { slaughterhouse: Slaughterhouse };
+const { slaughterhouse: s } = Astro.props;
+
+const totalCents = s.cases.reduce((sum, c) => sum + parseFineCents(c.boetebedrag), 0);
+const ernstCounts = [1, 2, 3, 4].map(n => ({
+  ernst: n,
+  count: s.cases.filter(c => c.ernst === n).length,
+}));
+const ERNST_LABEL: Record<number, string> = {1: 'Laag', 2: 'Midden', 3: 'Hoog', 4: 'Zeer hoog'};
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Layout title={s.naam}>
+  <p><a href={`${base}/`}>&larr; Terug naar kaart</a></p>
+  <h1>{s.naam}</h1>
+  <p class="address">
+    {s.adres ?? ''}{s.adres && s.postcode_plaats ? ', ' : ''}{s.postcode_plaats ?? ''}
+  </p>
+
+  <div class="summary">
+    <div><strong>{s.cases.length}</strong> {s.cases.length === 1 ? 'zaak' : 'zaken'}</div>
+    <div><strong>{formatEUR(totalCents)}</strong> totale boete</div>
+    <div class="ernst-bar">
+      {ernstCounts.filter(e => e.count > 0).map(e => (
+        <span class={`ernst-pill ernst-${e.ernst}`} title={`Ernst ${e.ernst} — ${ERNST_LABEL[e.ernst]}`}>
+          {e.count} × {e.ernst}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <ol class="cases">
+    {s.cases.map(c => (
+      <li id={`case-${c.nr}`} class="case">
+        <header>
+          <span class={`badge ernst-${c.ernst}`}>Ernst {c.ernst} — {ERNST_LABEL[c.ernst]}</span>
+          <span class="date">{c.datum}</span>
+          <span class="fine">{c.boetebedrag ? `€ ${c.boetebedrag}` : 'Geen boete'}</span>
+        </header>
+        <p class="samenvatting">{c.samenvatting}</p>
+        {c.ernst_tags.length > 0 && (
+          <div class="tags">
+            {c.ernst_tags.map(t => <span class="tag">{t}</span>)}
+          </div>
+        )}
+        <details>
+          <summary>Volledige bevinding</summary>
+          <blockquote>{c.overtreding}</blockquote>
+          {c.reactie && (
+            <>
+              <h4>Reactie slachthuis</h4>
+              <blockquote class="reactie">{c.reactie}</blockquote>
+            </>
+          )}
+        </details>
+      </li>
+    ))}
+  </ol>
+</Layout>
+
+<style>
+  .address { color: #555; margin: -0.5rem 0 1rem; }
+  .summary { display: flex; gap: 2rem; flex-wrap: wrap; padding: 0.8rem 1rem; background: #fafafa; border: 1px solid #eee; border-radius: 4px; margin-bottom: 2rem; }
+  .summary strong { font-size: 1.2rem; }
+  .ernst-bar { display: flex; gap: 0.4rem; align-items: center; }
+  .ernst-pill { padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.85rem; color: white; }
+  .ernst-pill.ernst-1 { background: #fde68a; color: #222; }
+  .ernst-pill.ernst-2 { background: #fb923c; }
+  .ernst-pill.ernst-3 { background: #dc2626; }
+  .ernst-pill.ernst-4 { background: #7f1d1d; }
+  .cases { list-style: none; padding: 0; margin: 0; }
+  .case { padding: 1rem; border: 1px solid #eee; border-radius: 4px; margin-bottom: 0.8rem; background: white; }
+  .case:target { border-color: #7f1d1d; box-shadow: 0 0 0 2px rgba(127,29,29,0.15); }
+  .case header { display: flex; gap: 1rem; align-items: baseline; margin-bottom: 0.5rem; flex-wrap: wrap; }
+  .badge { font-size: 0.78rem; padding: 0.2rem 0.55rem; border-radius: 3px; color: white; }
+  .badge.ernst-1 { background: #fde68a; color: #222; }
+  .badge.ernst-2 { background: #fb923c; }
+  .badge.ernst-3 { background: #dc2626; }
+  .badge.ernst-4 { background: #7f1d1d; }
+  .date, .fine { color: #555; font-size: 0.9rem; }
+  .samenvatting { margin: 0.4rem 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.4rem 0; }
+  .tag { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.78rem; background: #eee; padding: 0.15rem 0.45rem; border-radius: 3px; }
+  details { margin-top: 0.5rem; }
+  summary { cursor: pointer; color: #555; font-size: 0.9rem; }
+  blockquote { border-left: 3px solid #ccc; padding: 0.4rem 0.9rem; margin: 0.6rem 0; color: #333; font-size: 0.95rem; white-space: pre-wrap; }
+  blockquote.reactie { border-left-color: #888; background: #fafafa; }
+  h4 { margin: 1rem 0 0.3rem; font-size: 0.95rem; }
+</style>
