@@ -1,0 +1,16 @@
+# Claude Code local settings
+.claude/
+
+# Node / Astro (added preemptively; remove if not relevant)
+node_modules/
+dist/
+.astro/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS / editor
+.DS_Store
+*.swp
