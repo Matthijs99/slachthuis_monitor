@@ -1,0 +1,91 @@
+---
+import { loadData, parseFineCents } from '../lib/data';
+
+const { slaughterhouses, cases } = loadData();
+
+// Fines per slaughterhouse (sorted descending)
+const finesPerSlh = slaughterhouses
+  .map(s => ({
+    naam: s.naam,
+    cents: s.cases.reduce((sum, c) => sum + parseFineCents(c.boetebedrag), 0),
+    count: s.cases.length,
+  }))
+  .filter(x => x.cents > 0)
+  .sort((a, b) => b.cents - a.cents);
+
+const maxFine = Math.max(...finesPerSlh.map(x => x.cents), 1);
+
+// Severity distribution
+const ernstCounts = [1, 2, 3, 4].map(n => ({ n, count: cases.filter(c => c.ernst === n).length }));
+const maxErnstCount = Math.max(...ernstCounts.map(x => x.count), 1);
+
+// Cases per year
+const byYear = new Map<number, number>();
+for (const c of cases) if (c.jaar != null) byYear.set(c.jaar, (byYear.get(c.jaar) ?? 0) + 1);
+const yearEntries = Array.from(byYear.entries()).sort((a, b) => a[0] - b[0]);
+const maxYearCount = Math.max(...yearEntries.map(([, n]) => n), 1);
+
+const fmt = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+---
+
+<section class="charts">
+  <h2>Cijfers in een oogopslag</h2>
+
+  <div class="chart">
+    <h3>Totale boete per slachthuis</h3>
+    <div class="bars">
+      {finesPerSlh.map(x => (
+        <div class="row">
+          <div class="label">{x.naam}</div>
+          <div class="bar-wrap"><div class="bar" style={`width: ${(x.cents / maxFine) * 100}%`}></div></div>
+          <div class="value">{fmt.format(x.cents / 100)}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="chart">
+    <h3>Verdeling naar ernst</h3>
+    <div class="bars">
+      {ernstCounts.map(x => (
+        <div class="row">
+          <div class="label">Ernst {x.n}</div>
+          <div class="bar-wrap"><div class={`bar ernst-${x.n}`} style={`width: ${(x.count / maxErnstCount) * 100}%`}></div></div>
+          <div class="value">{x.count}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="chart">
+    <h3>Bevindingen per jaar</h3>
+    <div class="bars">
+      {yearEntries.map(([year, count]) => (
+        <div class="row">
+          <div class="label">{year}</div>
+          <div class="bar-wrap"><div class="bar" style={`width: ${(count / maxYearCount) * 100}%`}></div></div>
+          <div class="value">{count}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .charts { margin-top: 3rem; }
+  .chart { margin-bottom: 2rem; }
+  .chart h3 { font-size: 1rem; margin-bottom: 0.6rem; color: #555; }
+  .bars { display: grid; gap: 0.25rem; }
+  .row { display: grid; grid-template-columns: 14rem 1fr 5rem; gap: 0.5rem; align-items: center; font-size: 0.9rem; }
+  .label { color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-wrap { background: #f0f0f0; height: 18px; border-radius: 3px; overflow: hidden; }
+  .bar { height: 100%; background: #7f1d1d; }
+  .bar.ernst-1 { background: #fde68a; }
+  .bar.ernst-2 { background: #fb923c; }
+  .bar.ernst-3 { background: #dc2626; }
+  .bar.ernst-4 { background: #7f1d1d; }
+  .value { text-align: right; color: #555; font-variant-numeric: tabular-nums; }
+  @media (max-width: 700px) {
+    .row { grid-template-columns: 10rem 1fr 4rem; font-size: 0.85rem; }
+  }
+</style>

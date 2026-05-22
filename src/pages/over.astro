@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { loadData } from '../lib/data';
+import Charts from '../components/Charts.astro';
 
 const { cases, slaughterhouses } = loadData();
 const years = cases.map(c => c.jaar).filter((y): y is number => y != null);
@@ -59,6 +60,8 @@ const withFine = cases.filter(c => c.boetebedrag).length;
     De geparseerde dataset, het extractie- en geocodeer-script en de site-code zijn beschikbaar op
     <a href="https://github.com/">GitHub</a>. Issues en verbeteringen zijn welkom.
   </p>
+
+  <Charts />
 </Layout>
 
 <style>
