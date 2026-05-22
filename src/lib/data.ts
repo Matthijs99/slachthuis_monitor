@@ -83,15 +83,18 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
 
   for (const b of raw) {
     const key = dedupeKey(b.slachthuis.naam, b.slachthuis.postcode_plaats);
-    const g = geo[key] ?? {};
+    const g = geo[key];
     if (!bySlh.has(key)) {
+      if (!g) {
+        console.warn(`[data] no geocode entry for key "${key}" (${b.slachthuis.naam})`);
+      }
       bySlh.set(key, {
         slug: slugFor(b.slachthuis.naam, b.slachthuis.postcode_plaats),
         naam: b.slachthuis.naam,
         adres: b.slachthuis.adres,
         postcode_plaats: b.slachthuis.postcode_plaats,
-        lat: g.lat ?? null,
-        lon: g.lon ?? null,
+        lat: g?.lat ?? null,
+        lon: g?.lon ?? null,
         cases: [],
       });
     }
@@ -110,11 +113,16 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
   }
 
   // Ensure slugs are unique (defensive — should already be by construction)
-  const slugCounts = new Map<string, number>();
+  const assignedSlugs = new Set<string>();
   for (const s of bySlh.values()) {
-    const n = (slugCounts.get(s.slug) ?? 0) + 1;
-    slugCounts.set(s.slug, n);
-    if (n > 1) s.slug = `${s.slug}-${n}`;
+    if (!assignedSlugs.has(s.slug)) {
+      assignedSlugs.add(s.slug);
+      continue;
+    }
+    let n = 2;
+    while (assignedSlugs.has(`${s.slug}-${n}`)) n++;
+    s.slug = `${s.slug}-${n}`;
+    assignedSlugs.add(s.slug);
   }
 
   const slaughterhouses = Array.from(bySlh.values()).sort((a, b) => a.naam.localeCompare(b.naam, 'nl'));
