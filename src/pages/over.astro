@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { loadData } from '../lib/data';
+
+const { cases, slaughterhouses } = loadData();
+const years = cases.map(c => c.jaar).filter((y): y is number => y != null);
+const yearMin = Math.min(...years);
+const yearMax = Math.max(...years);
+const withFine = cases.filter(c => c.boetebedrag).length;
+---
+<Layout title="Over de data">
+  <h1>Over de data</h1>
+
+  <p class="lede">
+    De Slachthuis Monitor toont <strong>{cases.length} bevindingen</strong> van de NVWA bij
+    <strong>{slaughterhouses.length} Nederlandse roodvleesslachthuizen</strong> over de periode
+    {yearMin}–{yearMax}. Hiervan zijn er {withFine} bestraft met een formele boete.
+  </p>
+
+  <h2>Bron</h2>
+  <p>
+    De gegevens zijn afkomstig uit een WOO-besluit van de Nederlandse Voedsel- en Warenautoriteit
+    (NVWA). Een WOO-besluit is de openbaarmaking van overheidsdocumenten op grond van de
+    <a href="https://wetten.overheid.nl/BWBR0045754/" target="_blank" rel="noopener">Wet open overheid</a>.
+    Het besluit bevat alle Rapporten van Bevindingen en bijbehorende boetebeschikkingen die de NVWA
+    heeft opgesteld over roodvleesslachthuizen in de genoemde periode.
+  </p>
+
+  <h2>Werkwijze</h2>
+  <p>
+    Het bron-PDF (987 pagina's) is omgezet naar platte tekst en met een Python-script geparseerd. Per
+    geval zijn vastgelegd: het slachthuis (naam + adres), de datum, de letterlijke bevinding, de
+    boete (indien opgelegd), de eventuele reactie van het slachthuis, een korte Nederlandstalige
+    samenvatting, een welzijnsernst-classificatie (1–4) en passende tags. Het geocoderen van adressen
+    is gedaan via de PDOK Locatieserver. Alle data en code zijn open source.
+  </p>
+
+  <h2>Bekende beperkingen</h2>
+  <ul>
+    <li>
+      De NVWA-inventaris vermeldt 146 documentnummers. Het vrijgegeven tekstcorpus bevat 112
+      Rapporten van Bevindingen en 11 Schriftelijke Waarschuwingen. Ongeveer 23 documenten zijn dus
+      uitgesloten van het gepubliceerde corpus — meestal omdat ze al elders openbaar zijn, onder een
+      WOO-uitzondering vallen (5.1.2.i), of buiten de reikwijdte vallen.
+    </li>
+    <li>
+      De 11 Schriftelijke Waarschuwingen zijn (nog) niet opgenomen in deze visualisatie. Dat zijn
+      waarschuwingen zonder boete, die wel inzicht geven in lichtere overtredingen.
+    </li>
+    <li>
+      De ernst-tier is een welzijnsclassificatie en is bewust losgekoppeld van het boetebedrag. De
+      boete reflecteert het juridisch oordeel van de NVWA; de ernst-tier reflecteert de impact op
+      het dier. Zie <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/ernst/`}>Ernstgradering</a>.
+    </li>
+  </ul>
+
+  <h2>Code en data</h2>
+  <p>
+    De geparseerde dataset, het extractie- en geocodeer-script en de site-code zijn beschikbaar op
+    <a href="https://github.com/">GitHub</a>. Issues en verbeteringen zijn welkom.
+  </p>
+</Layout>
+
+<style>
+  .lede { font-size: 1.1rem; max-width: 70ch; color: #333; }
+  h2 { margin-top: 2rem; }
+  p, li { max-width: 70ch; }
+</style>
