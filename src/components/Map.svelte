@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import type { Slaughterhouse } from '../lib/data';
 
   type Props = {
@@ -36,8 +36,15 @@
     renderMarkers();
   });
 
+  onDestroy(() => {
+    map?.remove();
+  });
+
   function severityColor(ernst: number): string {
-    return ['#cccccc', '#fde68a', '#fb923c', '#dc2626', '#7f1d1d'][ernst] || '#888888';
+    const map: Record<number, string> = {
+      1: '#fde68a', 2: '#fb923c', 3: '#dc2626', 4: '#7f1d1d',
+    };
+    return map[ernst] ?? '#888888';
   }
 
   function escapeHtml(s: string): string {
