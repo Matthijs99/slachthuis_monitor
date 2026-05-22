@@ -16,7 +16,7 @@
   let L: any = null;
 
   onMount(async () => {
-    const leaflet = await import('leaflet');
+    const leaflet = await import('leaflet/dist/leaflet.js');
     await import('leaflet/dist/leaflet.css');
     L = leaflet.default;
 
