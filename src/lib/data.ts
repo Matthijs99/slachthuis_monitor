@@ -1,5 +1,6 @@
 import boetes from '../../data/boetes.json';
 import geocoded from '../../data/geocoded.json';
+import pagesData from '../../data/pages.json';
 
 // The official public WOO-besluit this dataset is extracted from.
 // >>> Replace with the canonical rijksoverheid.nl / nvwa.nl URL. <<<
@@ -13,6 +14,7 @@ export type Case = {
   rapport_nr: string | null;
   datum: string;
   jaar: number | null;
+  bron_pagina: number | null;
   overtreding: string;
   boetebedrag: string | null;
   reactie: string | null;
@@ -53,6 +55,8 @@ type RawGeo = Record<string, {
   matched: string | null;
 }>;
 
+type RawPages = Record<string, { page: number | null; method: string }>;
+
 function extractYear(datum: string): number | null {
   const m = datum.match(/\b(19|20)\d{2}\b/);
   return m ? parseInt(m[0], 10) : null;
@@ -83,6 +87,7 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
 
   const raw = boetes as RawBoete[];
   const geo = geocoded as RawGeo;
+  const pages = pagesData as RawPages;
 
   const bySlh = new Map<string, Slaughterhouse>();
 
@@ -108,6 +113,7 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
       rapport_nr: b.rapport_nr,
       datum: b.datum,
       jaar: extractYear(b.datum),
+      bron_pagina: pages[String(b.nr)]?.page ?? null,
       overtreding: b.overtreding,
       boetebedrag: b.boetebedrag,
       reactie: b.reactie,
