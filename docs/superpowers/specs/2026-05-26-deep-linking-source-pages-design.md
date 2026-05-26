@@ -24,7 +24,7 @@ gap and is the payoff that makes the `rapport_nr` reference genuinely useful.
   page boundary — so any character offset in the OCR maps to a page by counting preceding
   form-feeds.
 - Matching each case's verbatim `overtreding` quote against the OCR, **constrained to the
-  case's own report region** (located via its `rapport_nr`), locates **113/113** cases with only
+  case's own report region** (located via its `rapport_nr`), locates **112/112** cases with only
   **one** residual out-of-order page to verify by hand. (A naive whole-document quote search
   instead mislabels six cases — see "Verification of flagged cases" for why.)
 
@@ -72,7 +72,7 @@ Output shape:
 The naive whole-document matcher flagged six cases (34, 41, 56, 57, 61, 69); investigation
 showed this was the boilerplate-prefix bug described above — four genuinely wrong pages (34, 41,
 56, 57 → 258, 350, 487, 497) plus two false alarms (61, 69 were already correct). The
-region-constrained algorithm in step 3 resolves all 113 cases and reduces the out-of-order set
+region-constrained algorithm in step 3 resolves all 112 cases and reduces the out-of-order set
 to **one** residual (the case 68 ↔ 69 boundary, a genuine adjacent-report ambiguity, not a
 false match). Verification work is therefore: confirm that lone residual against the PDF, and
 spot-check 2–3 `region` matches. Honor a small hand-keyed override map in the script for any
@@ -119,7 +119,7 @@ Optionally show the page in the link text ("Bron: WOO-besluit, p. 59"). No style
 
 ## Verification
 
-1. `python3 scripts/extract_pages.py` → QA report shows 113/113 matched and a clean (or
+1. `python3 scripts/extract_pages.py` → QA report shows 112/112 matched and a clean (or
    fully-explained) out-of-order list; `data/pages.json` written.
 2. Spot-check 3–4 pages by opening `SOURCE_DOCUMENT_URL#page=<n>` in a browser and confirming
    the case's finding is on/near that page (including the previously-flagged 34, 57).

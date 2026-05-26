@@ -6,7 +6,7 @@
 
 ## Goals
 
-Build a public, static web app that visualises ~113 NVWA violations at Dutch red-meat slaughterhouses (2017–2023) on an interactive map of the Netherlands. The app should:
+Build a public, static web app that visualises ~112 NVWA violations at Dutch red-meat slaughterhouses (2017–2023) on an interactive map of the Netherlands. The app should:
 
 - Show one pin per slaughterhouse with click-through to violation details.
 - Let users filter by severity tier, year, and tag.
@@ -29,7 +29,7 @@ Build a public, static web app that visualises ~113 NVWA violations at Dutch red
 | Interactive islands | **Svelte 5** via `@astrojs/svelte` | Small bundle, ergonomic reactivity for the map + filter state. Used only in the map island; the rest of the site is static HTML. |
 | Map | **Leaflet** | MIT-licensed, no API key, mature. |
 | Tiles | **CARTO Positron** | Free, clean cartography, attribution only. Final choice deferred — see Open questions. |
-| Charts | **Hand-written SVG** | 113 records and a handful of aggregates does not justify a chart library. |
+| Charts | **Hand-written SVG** | 112 records and a handful of aggregates does not justify a chart library. |
 | Editorial content | **Astro content collections** (Markdown) | Native to Astro. |
 | Styling | **Hand-written CSS**, scoped via Astro/Svelte | No CSS framework needed at this scale. |
 | Geocoding (build-time) | **Python** script hitting **PDOK Locatieserver** | Dutch government geocoder, free, no key, NL-tuned. Reuses the existing Python tooling from the extraction phase. |
