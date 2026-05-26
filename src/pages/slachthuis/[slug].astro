@@ -24,6 +24,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <Layout title={s.naam}>
   <p><a href={`${base}/`}>&larr; Terug naar kaart</a></p>
   <h1>{s.naam}</h1>
+  {s.voormalige_namen.length > 0 && (
+    <p class="voorheen">Voorheen: {s.voormalige_namen.join(', ')}</p>
+  )}
   <p class="address">
     {s.adres ?? ''}{s.adres && s.postcode_plaats ? ', ' : ''}{s.postcode_plaats ?? ''}
   </p>
@@ -47,6 +50,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <span class={`badge ernst-${c.ernst}`}>Ernst {c.ernst} — {ERNST_LABEL[c.ernst]}</span>
           <span class="date">{c.datum}</span>
           <span class="fine">{c.boetebedrag ? `€ ${c.boetebedrag}` : 'Geen boete'}</span>
+          {c.operator_naam && <span class="operator" title="Exploitant ten tijde van de bevinding">Exploitant: {c.operator_naam}</span>}
         </header>
         <p class="samenvatting">{c.samenvatting}</p>
         {c.ernst_tags.length > 0 && (
@@ -80,7 +84,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </Layout>
 
 <style>
-  .address { color: #555; margin: -0.5rem 0 1rem; }
+  .voorheen { color: #777; font-size: 0.9rem; margin: -0.5rem 0 0.2rem; font-style: italic; }
+  .address { color: #555; margin: 0.2rem 0 1rem; }
+  .operator { color: #555; font-size: 0.82rem; background: #f0f0f0; padding: 0.1rem 0.45rem; border-radius: 3px; }
   .summary { display: flex; gap: 2rem; flex-wrap: wrap; padding: 0.8rem 1rem; background: #fafafa; border: 1px solid #eee; border-radius: 4px; margin-bottom: 2rem; }
   .summary strong { font-size: 1.2rem; }
   .ernst-bar { display: flex; gap: 0.4rem; align-items: center; }

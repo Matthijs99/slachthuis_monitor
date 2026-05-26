@@ -73,8 +73,12 @@
         fillOpacity: 0.85,
       });
 
+      const voorheen = s.voormalige_namen.length
+        ? `<span style="color:#777;font-style:italic">voorheen ${escapeHtml(s.voormalige_namen.join(', '))}</span><br>`
+        : '';
       const popup = `
         <strong>${escapeHtml(s.naam)}</strong><br>
+        ${voorheen}
         <span style="color:#555">${escapeHtml(s.postcode_plaats || '')}</span><br>
         <strong>${visibleCases.length}</strong> ${visibleCases.length === 1 ? 'zaak' : 'zaken'} ·
         max ernst <strong>${maxErnst}</strong><br>

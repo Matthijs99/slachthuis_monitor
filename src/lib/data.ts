@@ -21,6 +21,9 @@ export type Case = {
   samenvatting: string;
   ernst: Ernst;
   ernst_tags: string[];
+  // Original operator name when it differs from the merged site's primary name
+  // (set for findings of a former operator at a site that has since changed hands).
+  operator_naam: string | null;
 };
 
 export type Slaughterhouse = {
@@ -30,6 +33,8 @@ export type Slaughterhouse = {
   postcode_plaats: string | null;
   lat: number | null;
   lon: number | null;
+  // Former operators of this physical site, if it changed hands over time.
+  voormalige_namen: string[];
   cases: Case[];
 };
 
@@ -80,6 +85,20 @@ function dedupeKey(naam: string, postcode_plaats: string | null): string {
   return `${naam}|${(postcode_plaats || '').toLowerCase()}`;
 }
 
+// Sites where multiple legal operators occupied the same physical address over time.
+// We can't group on the raw address (OCR noise inflates it), and name-based dedup keeps
+// these as separate entries that geocode to identical coordinates — so they'd stack as
+// overlapping pins. Merge them explicitly: `primary` is the current/most-recent operator
+// whose name + slug represent the site; `merge` keys are former operators folded into it.
+const SITE_MERGES: { primary: string; merge: string[] }[] = [
+  {
+    // De Hoef Westzijde 33, 1426 AS De Hoef — Wouters operated until mid-2018,
+    // then Amstelland took over the same premises.
+    primary: dedupeKey('Slachterij Amstelland B.V.', '1426 AS De Hoef'),
+    merge: [dedupeKey('Slachterij/Grossierderij Wouters B.V.', '1426 AS De Hoef')],
+  },
+];
+
 let cache: { slaughterhouses: Slaughterhouse[]; cases: Case[] } | null = null;
 
 export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] } {
@@ -105,6 +124,7 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
         postcode_plaats: b.slachthuis.postcode_plaats,
         lat: g?.lat ?? null,
         lon: g?.lon ?? null,
+        voormalige_namen: [],
         cases: [],
       });
     }
@@ -120,7 +140,23 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
       samenvatting: b.samenvatting,
       ernst: b.ernst as Ernst,
       ernst_tags: b.ernst_tags,
+      operator_naam: null,
     });
+  }
+
+  // Fold former operators into their site's current operator (see SITE_MERGES).
+  for (const { primary, merge } of SITE_MERGES) {
+    const target = bySlh.get(primary);
+    if (!target) continue;
+    for (const key of merge) {
+      const former = bySlh.get(key);
+      if (!former) continue;
+      for (const c of former.cases) c.operator_naam = former.naam;
+      target.cases.push(...former.cases);
+      target.voormalige_namen.push(former.naam);
+      bySlh.delete(key);
+    }
+    target.cases.sort((a, b) => a.nr - b.nr);
   }
 
   // Ensure slugs are unique (defensive — should already be by construction)
