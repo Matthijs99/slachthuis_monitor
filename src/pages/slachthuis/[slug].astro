@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { loadData, parseFineCents, formatEUR, type Slaughterhouse } from '../../lib/data';
+import { loadData, parseFineCents, formatEUR, SOURCE_DOCUMENT_URL, type Slaughterhouse } from '../../lib/data';
 
 export async function getStaticPaths() {
   const { slaughterhouses } = loadData();
@@ -63,6 +63,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <blockquote class="reactie">{c.reactie}</blockquote>
             </>
           )}
+          <p class="bron">
+            {c.rapport_nr && <>NVWA-rapport <code>{c.rapport_nr}</code> · </>}
+            <a href={SOURCE_DOCUMENT_URL} target="_blank" rel="noopener">Bron: volledig WOO-besluit</a>
+          </p>
         </details>
       </li>
     ))}
@@ -97,4 +101,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   blockquote { border-left: 3px solid #ccc; padding: 0.4rem 0.9rem; margin: 0.6rem 0; color: #333; font-size: 0.95rem; white-space: pre-wrap; }
   blockquote.reactie { border-left-color: #888; background: #fafafa; }
   h4 { margin: 1rem 0 0.3rem; font-size: 0.95rem; }
+  .bron { margin: 0.8rem 0 0; font-size: 0.85rem; color: #666; }
+  .bron code { font-family: ui-monospace, "SF Mono", Menlo, monospace; background: #eee; padding: 0.1rem 0.35rem; border-radius: 3px; }
 </style>

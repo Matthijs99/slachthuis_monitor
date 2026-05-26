@@ -1,6 +1,11 @@
 import boetes from '../../data/boetes.json';
 import geocoded from '../../data/geocoded.json';
 
+// The official public WOO-besluit this dataset is extracted from.
+// >>> Replace with the canonical rijksoverheid.nl / nvwa.nl URL. <<<
+export const SOURCE_DOCUMENT_URL = 'https://open.overheid.nl/overheid/openbaarmakingen/api/v0/attachment/e94307d9-9e5b-4ad2-a7c8-66b054155cfb';
+export const SOURCE_REPO_URL = 'https://github.com/Matthijs99/slachthuis_monitor';
+
 export type Ernst = 1 | 2 | 3 | 4;
 
 export type Case = {

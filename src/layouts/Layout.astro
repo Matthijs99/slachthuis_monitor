@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { SOURCE_DOCUMENT_URL, SOURCE_REPO_URL } from '../lib/data';
 
 type Props = { title: string; description?: string };
 const { title, description } = Astro.props;
@@ -31,8 +32,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </main>
     <footer class="site-footer">
       <div class="container">
-        Bron: NVWA WOO-besluit (2017–2023). Code op
-        <a href="https://github.com/">GitHub</a>.
+        Bron: <a href={SOURCE_DOCUMENT_URL} target="_blank" rel="noopener">NVWA WOO-besluit (2017–2023)</a>. Code op
+        <a href={SOURCE_REPO_URL} target="_blank" rel="noopener">GitHub</a>.
       </div>
     </footer>
   </body>

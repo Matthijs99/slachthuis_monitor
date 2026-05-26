@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { loadData } from '../lib/data';
+import { loadData, SOURCE_DOCUMENT_URL, SOURCE_REPO_URL } from '../lib/data';
 import Charts from '../components/Charts.astro';
 
 const { cases, slaughterhouses } = loadData();
@@ -25,11 +25,12 @@ const withFine = cases.filter(c => c.boetebedrag).length;
     <a href="https://wetten.overheid.nl/BWBR0045754/" target="_blank" rel="noopener">Wet open overheid</a>.
     Het besluit bevat alle Rapporten van Bevindingen en bijbehorende boetebeschikkingen die de NVWA
     heeft opgesteld over roodvleesslachthuizen in de genoemde periode.
+    <a href={SOURCE_DOCUMENT_URL} target="_blank" rel="noopener">Bekijk het volledige besluit</a>.
   </p>
 
   <h2>Werkwijze</h2>
   <p>
-    Het bron-PDF (987 pagina's) is omgezet naar platte tekst en met een Python-script geparseerd. Per
+    Het <a href={SOURCE_DOCUMENT_URL} target="_blank" rel="noopener">bron-PDF</a> (987 pagina's) is omgezet naar platte tekst en met een Python-script geparseerd. Per
     geval zijn vastgelegd: het slachthuis (naam + adres), de datum, de letterlijke bevinding, de
     boete (indien opgelegd), de eventuele reactie van het slachthuis, een korte Nederlandstalige
     samenvatting, een welzijnsernst-classificatie (1–4) en passende tags. Het geocoderen van adressen
@@ -58,7 +59,7 @@ const withFine = cases.filter(c => c.boetebedrag).length;
   <h2>Code en data</h2>
   <p>
     De geparseerde dataset, het extractie- en geocodeer-script en de site-code zijn beschikbaar op
-    <a href="https://github.com/">GitHub</a>. Issues en verbeteringen zijn welkom.
+    <a href={SOURCE_REPO_URL} target="_blank" rel="noopener">GitHub</a>. Issues en verbeteringen zijn welkom.
   </p>
 
   <Charts />
