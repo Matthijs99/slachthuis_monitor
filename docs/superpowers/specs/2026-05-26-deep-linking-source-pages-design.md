@@ -23,9 +23,10 @@ gap and is the payoff that makes the `rapport_nr` reference genuinely useful.
 - The OCR text (`besluit.txt`) contains **exactly 987 form-feed (`\f`) characters**, one per
   page boundary — so any character offset in the OCR maps to a page by counting preceding
   form-feeds.
-- A normalized, multi-window match of each case's verbatim `overtreding` quote against the OCR
-  (with `rapport_nr` as a fallback anchor) locates **113/113** cases. Six land out of
-  page-order and need verification (see below).
+- Matching each case's verbatim `overtreding` quote against the OCR, **constrained to the
+  case's own report region** (located via its `rapport_nr`), locates **113/113** cases with only
+  **one** residual out-of-order page to verify by hand. (A naive whole-document quote search
+  instead mislabels six cases — see "Verification of flagged cases" for why.)
 
 ## Approach
 
@@ -43,12 +44,23 @@ Algorithm:
 2. Build a normalized projection of the OCR text with an index map back to raw offsets.
    Normalization: fix ligatures (`ﬁ`/`ﬂ`), NFKD-strip diacritics, lowercase, collapse all
    non-alphanumerics to single spaces.
-3. For each case, normalize `overtreding` and search for 40-char windows taken at offsets
-   {0, 20, 40, 80, 120}; first hit wins. If none match, fall back to searching `rapport_nr`.
-   Record both the resolved `page` and the `method` (`quote` | `rapport_nr` | `none`).
+3. **Constrain the search to the case's own report region.** A whole-document search for a
+   short quote prefix is unsafe: NVWA findings open with recurring boilerplate ("Ik stelde
+   vast dat bij het verplaatsen van dieren…", "Ik zag dat de medewerker die belast was met…"),
+   so a short prefix can occur 10+ times and a first-occurrence `find()` lands on an unrelated
+   earlier page. Instead:
+   a. Find the pages where this case's `rapport_nr` appears, **excluding the preamble/TOC**
+      (drop hits on pages ≤ ~50). Those remaining hits bound the report region
+      `[min−3, max+3]`.
+   b. Generate candidate pages by searching `overtreding` windows of length {40, 60, 90, 120}
+      at offsets stepping by 20, and keep only candidates **inside the report region**; pick
+      the most frequent in-region page.
+   c. Fallbacks: if no in-region quote match, use the report's start page; if the case has no
+      usable `rapport_nr` (3 cases), use the most frequent whole-document candidate.
+   Record the resolved `page` and the `method` (`region` | `rapport-start` | `nomatch`).
 4. Write `data/pages.json`: `{ "<nr>": { "page": <int|null>, "method": "<str>" }, ... }`.
 5. Print a QA report: counts by method, and a list of cases whose page is **less than the max
-   page seen so far** (out-of-order ⇒ likely false match), so they can be checked by hand.
+   page seen so far** (out-of-order ⇒ likely residual ambiguity), so they can be checked by hand.
 
 Output shape:
 ```json
@@ -57,13 +69,15 @@ Output shape:
 
 ### 2. Verification of flagged cases
 
-The first run flags **cases 34, 41, 56, 57, 61, 69** as out-of-order. Cases 34 and 57 both
-resolve to p.149 — a clear duplicate false match. For each flagged case: open the OCR around the
-candidate page and around the case's expected region (cases run roughly in page order), confirm
-which page actually carries that case's *Bevinding*, and correct `data/pages.json` if wrong
-(either by improving the matcher, or — for a stubborn one — a small hand-keyed override the
-script honors). Re-run until the QA report is clean or every remaining out-of-order entry is
-confirmed legitimate.
+The naive whole-document matcher flagged six cases (34, 41, 56, 57, 61, 69); investigation
+showed this was the boilerplate-prefix bug described above — four genuinely wrong pages (34, 41,
+56, 57 → 258, 350, 487, 497) plus two false alarms (61, 69 were already correct). The
+region-constrained algorithm in step 3 resolves all 113 cases and reduces the out-of-order set
+to **one** residual (the case 68 ↔ 69 boundary, a genuine adjacent-report ambiguity, not a
+false match). Verification work is therefore: confirm that lone residual against the PDF, and
+spot-check 2–3 `region` matches. Honor a small hand-keyed override map in the script for any
+page that manual review corrects, and re-run until the QA report is clean or every remaining
+out-of-order entry is confirmed legitimate.
 
 ### 3. `src/lib/data.ts`
 
