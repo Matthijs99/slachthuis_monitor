@@ -65,7 +65,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           )}
           <p class="bron">
             {c.rapport_nr && <>NVWA-rapport <code>{c.rapport_nr}</code> · </>}
-            <a href={SOURCE_DOCUMENT_URL} target="_blank" rel="noopener">Bron: volledig WOO-besluit</a>
+            <a
+              href={c.bron_pagina ? `${SOURCE_DOCUMENT_URL}#page=${c.bron_pagina}` : SOURCE_DOCUMENT_URL}
+              target="_blank"
+              rel="noopener"
+            >
+              Bron: WOO-besluit{c.bron_pagina ? `, p. ${c.bron_pagina}` : ''}
+            </a>
           </p>
         </details>
       </li>
