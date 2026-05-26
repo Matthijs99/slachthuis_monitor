@@ -1259,24 +1259,6 @@
   },
   {
     "nr": 69,
-    "rapport_nr": "108495",
-    "datum": "1 maart 2018",
-    "slachthuis": {
-      "naam": "Slachterij/Grossierderij Wouters B.V.",
-      "adres": "De Hoef Westzijde 33",
-      "postcode_plaats": "1426 AS De Hoef"
-    },
-    "overtreding": "Ik zag daar dat in hokken, genummerd met hok 8 en hok 9, schapen gehuisvest waren . Ik zag dat de waterbakken in de stal geen vloeibaar drinkbaar water bevatten. Ik zag en voelde dat het water bevroren was (zie foto's) . Ik heb daarop de 2 hokken verder geïnspecteerd en constateerde daarbij dat er ook geen andere vorm van watervoorziening aanwezig was.",
-    "boetebedrag": "2.500,00",
-    "reactie": "1. U legt uit dat de waterleidingen in de stal voorzien zijn van verwarmingsdraad, maar dat het in de eerste week van maart extreem koud was. De stalbaas heeft de schapen op 28 februari 2018 om 22.00 uur gecontroleerd op vloeibaar drinkwater. De volgende ochtend is om 5.00 uur de koudste temperatuur gemeten. Slechts de bovenzijde van het drinkbakje was bevroren. Om 7.00 uur op 1 maart 2018 was de stalbaas weer aanwezig om de dieren vers drinkwater te geven. U verzoekt om het voornemen tot boeteoplegging niet uit te voeren.",
-    "samenvatting": "Schapen in twee hokken hadden geen vloeibaar drinkwater omdat het water in de bakken bevroren was en er geen alternatieve watervoorziening was.",
-    "ernst": 2,
-    "ernst_tags": [
-      "huisvesting"
-    ]
-  },
-  {
-    "nr": 70,
     "rapport_nr": "108564",
     "datum": "1 maart 2018",
     "slachthuis": {
@@ -1294,7 +1276,7 @@
     ]
   },
   {
-    "nr": 71,
+    "nr": 70,
     "rapport_nr": "108316",
     "datum": "12 maart 2018",
     "slachthuis": {
@@ -1313,7 +1295,7 @@
     ]
   },
   {
-    "nr": 72,
+    "nr": 71,
     "rapport_nr": "108852",
     "datum": "15 maart 2018",
     "slachthuis": {
@@ -1331,7 +1313,7 @@
     ]
   },
   {
-    "nr": 73,
+    "nr": 72,
     "rapport_nr": "113334",
     "datum": "10 juli 2018",
     "slachthuis": {
@@ -1349,7 +1331,7 @@
     ]
   },
   {
-    "nr": 74,
+    "nr": 73,
     "rapport_nr": "112810",
     "datum": "7 augustus 2018",
     "slachthuis": {
@@ -1368,7 +1350,7 @@
     ]
   },
   {
-    "nr": 75,
+    "nr": 74,
     "rapport_nr": "113851",
     "datum": "22 augustus 2018",
     "slachthuis": {
@@ -1388,7 +1370,7 @@
     ]
   },
   {
-    "nr": 76,
+    "nr": 75,
     "rapport_nr": "114353",
     "datum": "30 augustus 2018",
     "slachthuis": {
@@ -1406,7 +1388,7 @@
     ]
   },
   {
-    "nr": 77,
+    "nr": 76,
     "rapport_nr": "115006",
     "datum": "3 september 2018",
     "slachthuis": {
@@ -1426,7 +1408,7 @@
     ]
   },
   {
-    "nr": 78,
+    "nr": 77,
     "rapport_nr": "115524",
     "datum": "30 oktober 2018",
     "slachthuis": {
@@ -1446,7 +1428,7 @@
     ]
   },
   {
-    "nr": 79,
+    "nr": 78,
     "rapport_nr": "115960",
     "datum": "8 januari 2019",
     "slachthuis": {
@@ -1464,7 +1446,7 @@
     ]
   },
   {
-    "nr": 80,
+    "nr": 79,
     "rapport_nr": "119121",
     "datum": "18 juli 2019",
     "slachthuis": {
@@ -1482,7 +1464,7 @@
     ]
   },
   {
-    "nr": 81,
+    "nr": 80,
     "rapport_nr": null,
     "datum": "22 juli 2019",
     "slachthuis": {
@@ -1501,7 +1483,7 @@
     ]
   },
   {
-    "nr": 82,
+    "nr": 81,
     "rapport_nr": "124091",
     "datum": "14 mei 2020",
     "slachthuis": {
@@ -1519,7 +1501,7 @@
     ]
   },
   {
-    "nr": 83,
+    "nr": 82,
     "rapport_nr": "128380",
     "datum": "25 november 2020",
     "slachthuis": {
@@ -1537,7 +1519,7 @@
     ]
   },
   {
-    "nr": 84,
+    "nr": 83,
     "rapport_nr": "129263",
     "datum": "12 januari 2021",
     "slachthuis": {
@@ -1555,7 +1537,7 @@
     ]
   },
   {
-    "nr": 85,
+    "nr": 84,
     "rapport_nr": "132226",
     "datum": "8 juni 2021",
     "slachthuis": {
@@ -1573,7 +1555,7 @@
     ]
   },
   {
-    "nr": 86,
+    "nr": 85,
     "rapport_nr": "102200",
     "datum": "14 april 2017",
     "slachthuis": {
@@ -1592,7 +1574,7 @@
     ]
   },
   {
-    "nr": 87,
+    "nr": 86,
     "rapport_nr": "103795",
     "datum": "6 juni 2017",
     "slachthuis": {
@@ -1610,7 +1592,7 @@
     ]
   },
   {
-    "nr": 88,
+    "nr": 87,
     "rapport_nr": "119941",
     "datum": "11 augustus 2019",
     "slachthuis": {
@@ -1630,7 +1612,7 @@
     ]
   },
   {
-    "nr": 89,
+    "nr": 88,
     "rapport_nr": "124591",
     "datum": "30 april 2020",
     "slachthuis": {
@@ -1649,7 +1631,7 @@
     ]
   },
   {
-    "nr": 90,
+    "nr": 89,
     "rapport_nr": "125866",
     "datum": "22 september 2020",
     "slachthuis": {
@@ -1667,7 +1649,7 @@
     ]
   },
   {
-    "nr": 91,
+    "nr": 90,
     "rapport_nr": "127853",
     "datum": "1 december 2020",
     "slachthuis": {
@@ -1685,7 +1667,7 @@
     ]
   },
   {
-    "nr": 92,
+    "nr": 91,
     "rapport_nr": "129583",
     "datum": "17 december 2020",
     "slachthuis": {
@@ -1703,7 +1685,7 @@
     ]
   },
   {
-    "nr": 93,
+    "nr": 92,
     "rapport_nr": "137608",
     "datum": "22 februari 2022",
     "slachthuis": {
@@ -1721,7 +1703,7 @@
     ]
   },
   {
-    "nr": 94,
+    "nr": 93,
     "rapport_nr": "107784",
     "datum": "22 januari 2018",
     "slachthuis": {
@@ -1739,7 +1721,7 @@
     ]
   },
   {
-    "nr": 95,
+    "nr": 94,
     "rapport_nr": "118799",
     "datum": "3 juni 2019",
     "slachthuis": {
@@ -1757,7 +1739,7 @@
     ]
   },
   {
-    "nr": 96,
+    "nr": 95,
     "rapport_nr": "118723",
     "datum": "27 juli 2019",
     "slachthuis": {
@@ -1776,7 +1758,7 @@
     ]
   },
   {
-    "nr": 97,
+    "nr": 96,
     "rapport_nr": "123606",
     "datum": "13 maart 2020",
     "slachthuis": {
@@ -1794,7 +1776,7 @@
     ]
   },
   {
-    "nr": 98,
+    "nr": 97,
     "rapport_nr": "123606",
     "datum": "13 maart 2020",
     "slachthuis": {
@@ -1812,7 +1794,7 @@
     ]
   },
   {
-    "nr": 99,
+    "nr": 98,
     "rapport_nr": "129305",
     "datum": "10 november 2020",
     "slachthuis": {
@@ -1830,7 +1812,7 @@
     ]
   },
   {
-    "nr": 100,
+    "nr": 99,
     "rapport_nr": "130579",
     "datum": "4 maart 2021",
     "slachthuis": {
@@ -1848,7 +1830,7 @@
     ]
   },
   {
-    "nr": 101,
+    "nr": 100,
     "rapport_nr": "131310",
     "datum": "31 mei 2021",
     "slachthuis": {
@@ -1867,7 +1849,7 @@
     ]
   },
   {
-    "nr": 102,
+    "nr": 101,
     "rapport_nr": "144006",
     "datum": "16 november 2022",
     "slachthuis": {
@@ -1885,7 +1867,7 @@
     ]
   },
   {
-    "nr": 103,
+    "nr": 102,
     "rapport_nr": "141392",
     "datum": "25 januari 2023",
     "slachthuis": {
@@ -1903,7 +1885,7 @@
     ]
   },
   {
-    "nr": 104,
+    "nr": 103,
     "rapport_nr": "120892",
     "datum": "17 september 2019",
     "slachthuis": {
@@ -1922,7 +1904,7 @@
     ]
   },
   {
-    "nr": 105,
+    "nr": 104,
     "rapport_nr": "122329",
     "datum": "20 september 2019",
     "slachthuis": {
@@ -1940,7 +1922,7 @@
     ]
   },
   {
-    "nr": 106,
+    "nr": 105,
     "rapport_nr": "122989",
     "datum": "21 januari 2020",
     "slachthuis": {
@@ -1959,7 +1941,7 @@
     ]
   },
   {
-    "nr": 107,
+    "nr": 106,
     "rapport_nr": "136185",
     "datum": "10 december 2021",
     "slachthuis": {
@@ -1977,7 +1959,7 @@
     ]
   },
   {
-    "nr": 108,
+    "nr": 107,
     "rapport_nr": "137861",
     "datum": "5 maart 2022",
     "slachthuis": {
@@ -1995,7 +1977,7 @@
     ]
   },
   {
-    "nr": 109,
+    "nr": 108,
     "rapport_nr": "132582",
     "datum": "21 juli 2021",
     "slachthuis": {
@@ -2014,7 +1996,7 @@
     ]
   },
   {
-    "nr": 110,
+    "nr": 109,
     "rapport_nr": "133113",
     "datum": "18 augustus 2021",
     "slachthuis": {
@@ -2032,7 +2014,7 @@
     ]
   },
   {
-    "nr": 111,
+    "nr": 110,
     "rapport_nr": "134047",
     "datum": "3 februari 2022",
     "slachthuis": {
@@ -2050,7 +2032,7 @@
     ]
   },
   {
-    "nr": 112,
+    "nr": 111,
     "rapport_nr": "134109",
     "datum": "7 februari 2022",
     "slachthuis": {
@@ -2068,7 +2050,7 @@
     ]
   },
   {
-    "nr": 113,
+    "nr": 112,
     "rapport_nr": "134109",
     "datum": "7 februari 2022",
     "slachthuis": {
