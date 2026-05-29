@@ -2,8 +2,6 @@
 import Layout from '../../layouts/Layout.astro';
 import { loadData, parseFineCents, formatEUR, SOURCE_DOCUMENT_URL, type Slaughterhouse } from '../../lib/data';
 import { BASE as base } from '../../lib/site';
-import { ERNST_TIERS, ERNST_LABELS } from '../../lib/ernst';
-import ErnstBadge from '../../components/ErnstBadge.svelte';
 
 export async function getStaticPaths() {
   const { slaughterhouses } = loadData();
@@ -17,10 +15,7 @@ type Props = { slaughterhouse: Slaughterhouse };
 const { slaughterhouse: s } = Astro.props;
 
 const totalCents = s.cases.reduce((sum, c) => sum + parseFineCents(c.boetebedrag), 0);
-const ernstCounts = ERNST_TIERS.map(n => ({
-  ernst: n,
-  count: s.cases.filter(c => c.ernst === n).length,
-}));
+const fined = s.cases.filter(c => c.boetebedrag).length;
 ---
 <Layout title={s.naam}>
   <p><a href={`${base}/`}>&larr; Terug naar kaart</a></p>
@@ -33,52 +28,37 @@ const ernstCounts = ERNST_TIERS.map(n => ({
   </p>
 
   <div class="summary">
-    <div><strong>{s.cases.length}</strong> {s.cases.length === 1 ? 'zaak' : 'zaken'}</div>
+    <div><strong>{s.cases.length}</strong> {s.cases.length === 1 ? 'bevinding' : 'bevindingen'}</div>
     <div><strong>{formatEUR(totalCents)}</strong> totale boete</div>
-    <div class="ernst-bar">
-      {ernstCounts.filter(e => e.count > 0).map(e => (
-        <span title={`Ernst ${e.ernst} — ${ERNST_LABELS[e.ernst]}`}>
-          <ErnstBadge ernst={e.ernst} text={`${e.count} × ${e.ernst}`} />
-        </span>
-      ))}
-    </div>
+    <div><strong>{fined}</strong> met boete</div>
   </div>
 
   <ol class="cases">
     {s.cases.map(c => (
       <li id={`case-${c.nr}`} class="case card">
         <header>
-          <ErnstBadge ernst={c.ernst} text={`Ernst ${c.ernst} — ${ERNST_LABELS[c.ernst]}`} />
+          <span class="nr">#{c.nr}</span>
           <span class="date">{c.datum}</span>
           <span class="fine">{c.boetebedrag ? `€ ${c.boetebedrag}` : 'Geen boete'}</span>
           {c.operator_naam && <span class="operator" title="Exploitant ten tijde van de bevinding">Exploitant: {c.operator_naam}</span>}
         </header>
-        <p class="samenvatting">{c.samenvatting}</p>
-        {c.ernst_tags.length > 0 && (
-          <div class="tags">
-            {c.ernst_tags.map(t => <span class="tag">{t}</span>)}
-          </div>
+        <blockquote>{c.overtreding}</blockquote>
+        {c.reactie && (
+          <details>
+            <summary>Reactie slachthuis</summary>
+            <blockquote class="reactie">{c.reactie}</blockquote>
+          </details>
         )}
-        <details>
-          <summary>Volledige bevinding</summary>
-          <blockquote>{c.overtreding}</blockquote>
-          {c.reactie && (
-            <>
-              <h4>Reactie slachthuis</h4>
-              <blockquote class="reactie">{c.reactie}</blockquote>
-            </>
-          )}
-          <p class="bron">
-            {c.rapport_nr && <>NVWA-rapport <code>{c.rapport_nr}</code> · </>}
-            <a
-              href={c.bron_pagina ? `${SOURCE_DOCUMENT_URL}#page=${c.bron_pagina}` : SOURCE_DOCUMENT_URL}
-              target="_blank"
-              rel="noopener"
-            >
-              Bron: WOO-besluit{c.bron_pagina ? `, p. ${c.bron_pagina}` : ''}
-            </a>
-          </p>
-        </details>
+        <p class="bron">
+          {c.rapport_nr && <>NVWA-rapport <code>{c.rapport_nr}</code> · </>}
+          <a
+            href={c.bron_pagina ? `${SOURCE_DOCUMENT_URL}#page=${c.bron_pagina}` : SOURCE_DOCUMENT_URL}
+            target="_blank"
+            rel="noopener"
+          >
+            Bron: WOO-besluit{c.bron_pagina ? `, p. ${c.bron_pagina}` : ''}
+          </a>
+        </p>
       </li>
     ))}
   </ol>
@@ -90,20 +70,16 @@ const ernstCounts = ERNST_TIERS.map(n => ({
   .operator { color: var(--c-muted); font-size: 0.82rem; background: var(--c-surface-hover); padding: 0.1rem 0.45rem; border-radius: var(--radius); }
   .summary { display: flex; gap: 2rem; flex-wrap: wrap; padding: 0.8rem 1rem; background: var(--c-surface); border: 1px solid var(--c-border-soft); border-radius: var(--radius); margin-bottom: 2rem; }
   .summary strong { font-size: 1.2rem; }
-  .ernst-bar { display: flex; gap: 0.4rem; align-items: center; }
   .cases { list-style: none; padding: 0; margin: 0; }
   .case { padding: 1rem; margin-bottom: 0.8rem; }
   .case:target { border-color: var(--c-accent); box-shadow: 0 0 0 2px rgba(127,29,29,0.15); }
   .case header { display: flex; gap: 1rem; align-items: baseline; margin-bottom: 0.5rem; flex-wrap: wrap; }
+  .nr { font-weight: 600; color: var(--c-muted); }
   .date, .fine { color: var(--c-muted); font-size: 0.9rem; }
-  .samenvatting { margin: 0.4rem 0; }
-  .tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.4rem 0; }
-  .tag { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.78rem; background: var(--c-chip-bg); padding: 0.15rem 0.45rem; border-radius: var(--radius); }
+  blockquote { font-size: 0.95rem; white-space: pre-wrap; margin: 0.5rem 0; }
+  blockquote.reactie { border-left-color: var(--c-muted-soft); background: var(--c-surface); }
   details { margin-top: 0.5rem; }
   summary { cursor: pointer; color: var(--c-muted); font-size: 0.9rem; }
-  blockquote { font-size: 0.95rem; white-space: pre-wrap; }
-  blockquote.reactie { border-left-color: var(--c-muted-soft); background: var(--c-surface); }
-  h4 { margin: 1rem 0 0.3rem; font-size: 0.95rem; }
   .bron { margin: 0.8rem 0 0; font-size: 0.85rem; color: var(--c-muted-soft); }
   .bron code { font-family: ui-monospace, "SF Mono", Menlo, monospace; background: var(--c-chip-bg); padding: 0.1rem 0.35rem; border-radius: var(--radius); }
 </style>
