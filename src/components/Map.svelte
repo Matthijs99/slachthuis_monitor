@@ -1,14 +1,15 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import type { Slaughterhouse } from '../lib/data';
-  import { ERNST_COLORS, type Ernst } from '../lib/ernst';
+
+  // Single pin colour. Keep in sync with --c-pin in src/styles/global.css.
+  const PIN_COLOR = '#7f1d1d';
 
   type Props = {
     slaughterhouses: Slaughterhouse[];
     visibleCaseNrs: Set<number>;
     base: string;
   };
-
   let { slaughterhouses, visibleCaseNrs, base }: Props = $props();
 
   let mapEl: HTMLDivElement;
@@ -21,11 +22,7 @@
     await import('leaflet/dist/leaflet.css');
     L = leaflet.default;
 
-    map = L.map(mapEl, {
-      center: [52.15, 5.4],
-      zoom: 7,
-      scrollWheelZoom: true,
-    });
+    map = L.map(mapEl, { center: [52.15, 5.4], zoom: 7, scrollWheelZoom: true });
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
@@ -37,18 +34,16 @@
     renderMarkers();
   });
 
-  onDestroy(() => {
-    map?.remove();
-  });
-
-  function severityColor(ernst: number): string {
-    return ERNST_COLORS[ernst as Ernst] ?? '#888888';
-  }
+  onDestroy(() => { map?.remove(); });
 
   function escapeHtml(s: string): string {
     return s.replace(/[&<>"']/g, c =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!)
     );
+  }
+
+  function radiusFor(count: number): number {
+    return 6 + Math.min(count * 1.2, 16);
   }
 
   function renderMarkers() {
@@ -60,14 +55,11 @@
       const visibleCases = s.cases.filter(c => visibleCaseNrs.has(c.nr));
       if (visibleCases.length === 0) continue;
 
-      const maxErnst = Math.max(...visibleCases.map(c => c.ernst));
-      const color = severityColor(maxErnst);
-
       const marker = L.circleMarker([s.lat, s.lon], {
-        radius: 6 + Math.min(visibleCases.length * 1.5, 12),
+        radius: radiusFor(visibleCases.length),
         color: '#222',
         weight: 1,
-        fillColor: color,
+        fillColor: PIN_COLOR,
         fillOpacity: 0.85,
       });
 
@@ -78,8 +70,7 @@
         <strong>${escapeHtml(s.naam)}</strong><br>
         ${voorheen}
         <span style="color:#555">${escapeHtml(s.postcode_plaats || '')}</span><br>
-        <strong>${visibleCases.length}</strong> ${visibleCases.length === 1 ? 'bevinding' : 'bevindingen'} ·
-        max ernst <strong>${maxErnst}</strong><br>
+        <strong>${visibleCases.length}</strong> ${visibleCases.length === 1 ? 'bevinding' : 'bevindingen'}<br>
         <a href="${base}/slachthuis/${s.slug}/">Bekijk profiel &rarr;</a>
       `;
       marker.bindPopup(popup);
@@ -88,8 +79,6 @@
   }
 
   $effect(() => {
-    // Reading these props inside the effect registers them as dependencies,
-    // so renderMarkers() re-runs whenever either changes.
     void visibleCaseNrs;
     void slaughterhouses;
     renderMarkers();
