@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Story from '../components/Story.svelte';
 import StoryStep from '../components/StoryStep.svelte';
+import CaseList from '../components/CaseList.svelte';
 import { loadData, formatEUR } from '../lib/data';
 import { BASE as base, siteStats } from '../lib/site';
 import { siteStops, finesSummary, storyYears } from '../lib/story';
@@ -30,6 +31,7 @@ const { caseCount, slhCount } = siteStats();
     {stops.map((stop, i) => (
       <StoryStep stop={stop} index={i} total={stops.length} active={true} />
     ))}
+    <CaseList {cases} {slaughterhouses} {base} />
     <p class="static-link"><a href={`${base}/over/`}>Over de data &rarr;</a></p>
   </div>
 </Layout>

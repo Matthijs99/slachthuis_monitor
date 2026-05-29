@@ -135,8 +135,8 @@ Consistent with the project's "no automated suite" stance:
 |---|---|---:|---:|---|---|
 | 1 | Exportslachterij Gosschalk (Epe) | 20 | €90.000 | 2019–2022 | #35 — €10.000 |
 | 2 | Slachterij Amstelland (De Hoef)¹ | 14 | €50.000 | 2018–2019 | #76 — €12.500 |
-| 3 | ESA (Apeldoorn) | 10 | €20.000 | 2017–2022 | #15 — €5.000² |
-| 4 | VION Boxtel | 10 | €30.000 | 2018–2023 | #100 — €7.500 |
+| 3 | VION Boxtel | 10 | €30.000 | 2018–2023 | #100 — €7.500 |
+| 4 | ESA (Apeldoorn) | 10 | €20.000 | 2017–2022 | #15 — €5.000² |
 | 5 | Pali Geldrop | 9 | €35.000 | 2017–2020 | #59 — €5.000 |
 | 6 | International Meat Processing Services (Breukelen) | 8 | €50.000 | 2018–2022 | #53 — €12.500 |
 

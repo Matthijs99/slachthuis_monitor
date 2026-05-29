@@ -30,7 +30,7 @@ a:hover { text-decoration: underline; }
 
 .container { max-width: var(--max-width); margin: 0 auto; padding: 1rem 1.25rem; }
 
-/* Shared surface for case/profile/tier boxes, so cards match across pages. */
+/* Shared surface for case/profile boxes, so cards match across pages. */
 .card {
   background: var(--c-bg);
   border: 1px solid var(--c-border-soft);
