@@ -32,7 +32,10 @@
       center: NL_CENTER,
       zoom: NL_ZOOM,
       scrollWheelZoom: mode === 'interactive',
-      zoomControl: mode === 'interactive',
+      // Always create the zoom control so setInteractions() can add/remove it;
+      // the mode effect removes it in tour mode. (If created false, map.zoomControl
+      // never exists and could never be re-added when flipping to interactive.)
+      zoomControl: true,
       dragging: mode === 'interactive',
     });
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {

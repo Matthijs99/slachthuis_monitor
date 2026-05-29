@@ -92,7 +92,9 @@
   .step.fines, .step.handoff { opacity: 0.45; transition: opacity 0.3s; }
   .step.fines.active, .step.handoff.active { opacity: 1; }
   .stepno { font-size: 0.75rem; letter-spacing: 0.18em; color: var(--c-muted-soft); }
-  .handoff { min-height: auto; padding-bottom: 3rem; }
+  /* Inherit .step's min-height (90vh / 70vh) so this short last step still
+     crosses the scrollytell centre line and flips the map to interactive. */
+  .handoff { padding-bottom: 3rem; }
   @media (max-width: 800px) {
     .story { grid-template-columns: 1fr; }
     .sticky-map { position: sticky; top: 0; height: 55vh; order: -1; }
