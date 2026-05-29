@@ -34,10 +34,14 @@
   // Interactive-tool filter state (only meaningful once mode === 'interactive').
   let filters = $state(emptyFilters());
   onMount(() => {
+    document.documentElement.classList.add('story-enhanced');
     filters = paramsToFilters(new URLSearchParams(window.location.search));
     const onPop = () => { filters = paramsToFilters(new URLSearchParams(window.location.search)); };
     window.addEventListener('popstate', onPop);
-    return () => window.removeEventListener('popstate', onPop);
+    return () => {
+      document.documentElement.classList.remove('story-enhanced');
+      window.removeEventListener('popstate', onPop);
+    };
   });
   function setFilters(next: typeof filters) {
     filters = next;

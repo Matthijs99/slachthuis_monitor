@@ -66,3 +66,9 @@ footer.site-footer {
   color: var(--c-muted);
   font-size: 0.85rem;
 }
+
+/* Scrollytelling: show the static article only when the JS island is absent. */
+.story-enhanced .static-article { display: none; }
+/* The story island manages its own two-column width; let it use the viewport. */
+.story-enhanced main.container { max-width: none; padding-left: 0; padding-right: 0; }
+.story-enhanced .hook { padding: 0 1.25rem; }
