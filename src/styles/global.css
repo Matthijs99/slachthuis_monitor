@@ -14,11 +14,8 @@
   --c-surface-hover: #f0f0f0;
   --c-chip-bg: #eee;
   --c-accent: #7f1d1d;
-  /* Welfare-severity tiers — MUST stay in sync with ERNST_COLORS in src/lib/ernst.ts */
-  --c-ernst-1: #fde68a;
-  --c-ernst-2: #fb923c;
-  --c-ernst-3: #dc2626;
-  --c-ernst-4: #7f1d1d;
+  /* Map pin colour — keep in sync with PIN_COLOR in Map.svelte */
+  --c-pin: #7f1d1d;
   /* Shape */
   --radius: 4px;
   --radius-pill: 999px;
@@ -33,14 +30,14 @@ a:hover { text-decoration: underline; }
 
 .container { max-width: var(--max-width); margin: 0 auto; padding: 1rem 1.25rem; }
 
-/* Shared surface for case/profile/tier boxes, so cards match across pages. */
+/* Shared surface for case/profile boxes, so cards match across pages. */
 .card {
   background: var(--c-bg);
   border: 1px solid var(--c-border-soft);
   border-radius: var(--radius);
 }
 
-/* Base quote styling shared by the profile, ernst and case views. */
+/* Base quote styling shared by the profile and case views. */
 blockquote {
   border-left: 3px solid var(--c-border-strong);
   padding: 0.4rem 0.9rem;
@@ -69,3 +66,9 @@ footer.site-footer {
   color: var(--c-muted);
   font-size: 0.85rem;
 }
+
+/* Scrollytelling: show the static article only when the JS island is absent. */
+.story-enhanced .static-article { display: none; }
+/* The story island manages its own two-column width; let it use the viewport. */
+.story-enhanced main.container { max-width: none; padding-left: 0; padding-right: 0; }
+.story-enhanced .hook { padding: 0 1.25rem; }

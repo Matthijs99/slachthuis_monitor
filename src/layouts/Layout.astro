@@ -6,7 +6,7 @@ import { BASE as base } from '../lib/site';
 type Props = { title: string; description?: string };
 const { title, description } = Astro.props;
 const META_DESCRIPTION = description ??
-  'Interactieve kaart van NVWA-bevindingen bij Nederlandse roodvleesslachthuizen (2017–2023): boetes, ernstgradering en context per slachthuis.';
+  'Interactieve kaart van NVWA-bevindingen bij Nederlandse roodvleesslachthuizen (2017–2023): boetes en context per slachthuis.';
 ---
 <!doctype html>
 <html lang="nl">
@@ -22,7 +22,6 @@ const META_DESCRIPTION = description ??
         <h1><a href={`${base}/`} style="color: inherit; text-decoration: none;">Slachthuis Monitor</a></h1>
         <nav aria-label="Hoofdnavigatie">
           <a href={`${base}/`}>Kaart</a>
-          <a href={`${base}/ernst/`}>Ernstgradering</a>
           <a href={`${base}/over/`}>Over de data</a>
         </nav>
       </div>

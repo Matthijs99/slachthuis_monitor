@@ -1,10 +1,6 @@
 import boetes from '../../data/boetes.json';
 import geocoded from '../../data/geocoded.json';
 import pagesData from '../../data/pages.json';
-import type { Ernst } from './ernst';
-
-// Re-exported for back-compat: the canonical definition now lives in ./ernst.
-export type { Ernst } from './ernst';
 
 // The official public WOO-besluit this dataset is extracted from, served as an
 // inline PDF by open.overheid.nl. Kept as the direct attachment URL (not an HTML
@@ -15,6 +11,7 @@ export const SOURCE_REPO_URL = 'https://github.com/Matthijs99/slachthuis_monitor
 
 export type Case = {
   nr: number;
+  slug: string;           // slug of the slaughterhouse this case belongs to
   rapport_nr: string | null;
   datum: string;
   jaar: number | null;
@@ -22,9 +19,6 @@ export type Case = {
   overtreding: string;
   boetebedrag: string | null;
   reactie: string | null;
-  samenvatting: string;
-  ernst: Ernst;
-  ernst_tags: string[];
   // Original operator name when it differs from the merged site's primary name
   // (set for findings of a former operator at a site that has since changed hands).
   operator_naam: string | null;
@@ -50,9 +44,6 @@ type RawBoete = {
   overtreding: string;
   boetebedrag: string | null;
   reactie: string | null;
-  samenvatting: string;
-  ernst: number;
-  ernst_tags: string[];
 };
 
 type RawGeo = Record<string, {
@@ -134,6 +125,7 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
     }
     bySlh.get(key)!.cases.push({
       nr: b.nr,
+      slug: '',
       rapport_nr: b.rapport_nr,
       datum: b.datum,
       jaar: extractYear(b.datum),
@@ -141,9 +133,6 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
       overtreding: b.overtreding,
       boetebedrag: b.boetebedrag,
       reactie: b.reactie,
-      samenvatting: b.samenvatting,
-      ernst: b.ernst as Ernst,
-      ernst_tags: b.ernst_tags,
       operator_naam: null,
     });
   }
@@ -174,6 +163,11 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
     while (assignedSlugs.has(`${s.slug}-${n}`)) n++;
     s.slug = `${s.slug}-${n}`;
     assignedSlugs.add(s.slug);
+  }
+
+  // Stamp each case with its (now-final) slaughterhouse slug.
+  for (const s of bySlh.values()) {
+    for (const c of s.cases) c.slug = s.slug;
   }
 
   const slaughterhouses = Array.from(bySlh.values()).sort((a, b) => a.naam.localeCompare(b.naam, 'nl'));

@@ -1,20 +1,27 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import type { Slaughterhouse } from '../lib/data';
-  import { ERNST_COLORS, type Ernst } from '../lib/ernst';
+
+  // Single pin colour. Keep in sync with --c-pin in src/styles/global.css.
+  const PIN_COLOR = '#7f1d1d';
+  const NL_CENTER: [number, number] = [52.15, 5.4];
+  const NL_ZOOM = 7;
 
   type Props = {
     slaughterhouses: Slaughterhouse[];
     visibleCaseNrs: Set<number>;
     base: string;
+    mode?: 'tour' | 'interactive';
+    activeSlug?: string | null;
   };
-
-  let { slaughterhouses, visibleCaseNrs, base }: Props = $props();
+  let { slaughterhouses, visibleCaseNrs, base, mode = 'interactive', activeSlug = null }: Props = $props();
 
   let mapEl: HTMLDivElement;
   let map: any = null;
   let layerGroup: any = null;
   let L: any = null;
+  let ready = $state(false);
+  const reduceMotion = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   onMount(async () => {
     const leaflet = await import('leaflet/dist/leaflet.js');
@@ -22,9 +29,14 @@
     L = leaflet.default;
 
     map = L.map(mapEl, {
-      center: [52.15, 5.4],
-      zoom: 7,
-      scrollWheelZoom: true,
+      center: NL_CENTER,
+      zoom: NL_ZOOM,
+      scrollWheelZoom: mode === 'interactive',
+      // Always create the zoom control so setInteractions() can add/remove it;
+      // the mode effect removes it in tour mode. (If created false, map.zoomControl
+      // never exists and could never be re-added when flipping to interactive.)
+      zoomControl: true,
+      dragging: mode === 'interactive',
     });
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       attribution:
@@ -34,65 +46,80 @@
     }).addTo(map);
 
     layerGroup = L.layerGroup().addTo(map);
-    renderMarkers();
+    ready = true;
   });
 
-  onDestroy(() => {
-    map?.remove();
-  });
-
-  function severityColor(ernst: number): string {
-    return ERNST_COLORS[ernst as Ernst] ?? '#888888';
-  }
+  onDestroy(() => { map?.remove(); });
 
   function escapeHtml(s: string): string {
     return s.replace(/[&<>"']/g, c =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!)
     );
   }
+  function radiusFor(count: number): number { return 6 + Math.min(count * 1.2, 16); }
+
+  function setInteractions(on: boolean) {
+    if (!map) return;
+    const fns = ['dragging', 'scrollWheelZoom', 'doubleClickZoom', 'boxZoom', 'keyboard'];
+    for (const f of fns) on ? map[f]?.enable() : map[f]?.disable();
+    map.touchZoom?.[on ? 'enable' : 'disable']?.();
+    if (map.zoomControl) on ? map.zoomControl.addTo(map) : map.zoomControl.remove();
+  }
 
   function renderMarkers() {
-    if (!map || !L || !layerGroup) return;
+    if (!ready) return;
     layerGroup.clearLayers();
-
     for (const s of slaughterhouses) {
       if (s.lat == null || s.lon == null) continue;
-      const visibleCases = s.cases.filter(c => visibleCaseNrs.has(c.nr));
+      const visibleCases = mode === 'tour' ? s.cases : s.cases.filter(c => visibleCaseNrs.has(c.nr));
       if (visibleCases.length === 0) continue;
 
-      const maxErnst = Math.max(...visibleCases.map(c => c.ernst));
-      const color = severityColor(maxErnst);
+      const isActive = mode === 'tour' && s.slug === activeSlug;
+      const dimmed = mode === 'tour' && activeSlug != null && !isActive;
 
       const marker = L.circleMarker([s.lat, s.lon], {
-        radius: 6 + Math.min(visibleCases.length * 1.5, 12),
+        radius: radiusFor(visibleCases.length) * (isActive ? 1.4 : 1),
         color: '#222',
-        weight: 1,
-        fillColor: color,
-        fillOpacity: 0.85,
+        weight: isActive ? 2 : 1,
+        fillColor: PIN_COLOR,
+        fillOpacity: dimmed ? 0.25 : 0.85,
       });
 
-      const voorheen = s.voormalige_namen.length
-        ? `<span style="color:#777;font-style:italic">voorheen ${escapeHtml(s.voormalige_namen.join(', '))}</span><br>`
-        : '';
-      const popup = `
-        <strong>${escapeHtml(s.naam)}</strong><br>
-        ${voorheen}
-        <span style="color:#555">${escapeHtml(s.postcode_plaats || '')}</span><br>
-        <strong>${visibleCases.length}</strong> ${visibleCases.length === 1 ? 'bevinding' : 'bevindingen'} ·
-        max ernst <strong>${maxErnst}</strong><br>
-        <a href="${base}/slachthuis/${s.slug}/">Bekijk profiel &rarr;</a>
-      `;
-      marker.bindPopup(popup);
+      if (mode === 'interactive') {
+        const voorheen = s.voormalige_namen.length
+          ? `<span style="color:#777;font-style:italic">voorheen ${escapeHtml(s.voormalige_namen.join(', '))}</span><br>`
+          : '';
+        marker.bindPopup(`
+          <strong>${escapeHtml(s.naam)}</strong><br>${voorheen}
+          <span style="color:#555">${escapeHtml(s.postcode_plaats || '')}</span><br>
+          <strong>${visibleCases.length}</strong> ${visibleCases.length === 1 ? 'bevinding' : 'bevindingen'}<br>
+          <a href="${base}/slachthuis/${s.slug}/">Bekijk profiel &rarr;</a>
+        `);
+      }
       marker.addTo(layerGroup);
     }
   }
 
+  // Re-render markers when inputs change.
+  $effect(() => { void visibleCaseNrs; void slaughterhouses; void mode; void activeSlug; void ready; renderMarkers(); });
+
+  // Drive the camera in tour mode when the active site changes.
   $effect(() => {
-    // Reading these props inside the effect registers them as dependencies,
-    // so renderMarkers() re-runs whenever either changes.
-    void visibleCaseNrs;
-    void slaughterhouses;
-    renderMarkers();
+    if (!ready || mode !== 'tour') return;
+    const s = slaughterhouses.find(x => x.slug === activeSlug);
+    if (s && s.lat != null && s.lon != null) {
+      if (reduceMotion) map.setView([s.lat, s.lon], 11);
+      else map.flyTo([s.lat, s.lon], 11, { duration: 1.2 });
+    } else {
+      reduceMotion ? map.setView(NL_CENTER, NL_ZOOM) : map.flyTo(NL_CENTER, NL_ZOOM, { duration: 1.2 });
+    }
+  });
+
+  // Toggle interactivity when the mode flips.
+  $effect(() => {
+    if (!ready) return;
+    setInteractions(mode === 'interactive');
+    if (mode === 'interactive') map.setView(NL_CENTER, NL_ZOOM);
   });
 </script>
 

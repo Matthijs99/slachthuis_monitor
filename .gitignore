@@ -1,5 +1,6 @@
 # Claude Code local settings
 .claude/
+.superpowers/
 
 # Node / Astro (added preemptively; remove if not relevant)
 node_modules/

@@ -1,6 +1,5 @@
 ---
 import { loadData, parseFineCents } from '../lib/data';
-import { ERNST_TIERS } from '../lib/ernst';
 
 const { slaughterhouses, cases } = loadData();
 
@@ -15,10 +14,6 @@ const finesPerSlh = slaughterhouses
   .sort((a, b) => b.cents - a.cents);
 
 const maxFine = Math.max(...finesPerSlh.map(x => x.cents), 1);
-
-// Severity distribution
-const ernstCounts = ERNST_TIERS.map(n => ({ n, count: cases.filter(c => c.ernst === n).length }));
-const maxErnstCount = Math.max(...ernstCounts.map(x => x.count), 1);
 
 // Cases per year
 const byYear = new Map<number, number>();
@@ -40,19 +35,6 @@ const fmt = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR',
           <div class="label">{x.naam}</div>
           <div class="bar-wrap"><div class="bar" style={`width: ${(x.cents / maxFine) * 100}%`}></div></div>
           <div class="value">{fmt.format(x.cents / 100)}</div>
-        </div>
-      ))}
-    </div>
-  </div>
-
-  <div class="chart">
-    <h3>Verdeling naar ernst</h3>
-    <div class="bars">
-      {ernstCounts.map(x => (
-        <div class="row">
-          <div class="label">Ernst {x.n}</div>
-          <div class="bar-wrap"><div class={`bar ernst-${x.n}`} style={`width: ${(x.count / maxErnstCount) * 100}%`}></div></div>
-          <div class="value">{x.count}</div>
         </div>
       ))}
     </div>
@@ -81,10 +63,6 @@ const fmt = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR',
   .label { color: var(--c-text-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .bar-wrap { background: var(--c-surface-hover); height: 18px; border-radius: var(--radius); overflow: hidden; }
   .bar { height: 100%; background: var(--c-accent); }
-  .bar.ernst-1 { background: var(--c-ernst-1); }
-  .bar.ernst-2 { background: var(--c-ernst-2); }
-  .bar.ernst-3 { background: var(--c-ernst-3); }
-  .bar.ernst-4 { background: var(--c-ernst-4); }
   .value { text-align: right; color: var(--c-muted); font-variant-numeric: tabular-nums; }
   @media (max-width: 700px) {
     .row { grid-template-columns: 10rem 1fr 4rem; font-size: 0.85rem; }
