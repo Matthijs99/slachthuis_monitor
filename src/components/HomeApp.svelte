@@ -11,12 +11,15 @@
   type Props = {
     slaughterhouses: Slaughterhouse[];
     cases: Case[];
-    allTags: string[];
     yearMin: number;
     yearMax: number;
     base: string;
   };
-  let { slaughterhouses, cases, allTags, yearMin, yearMax, base }: Props = $props();
+  let { slaughterhouses, cases, yearMin, yearMax, base }: Props = $props();
+
+  let slhOptions = $derived(
+    slaughterhouses.map(s => ({ slug: s.slug, naam: s.naam }))
+  );
 
   let filters = $state(emptyFilters());
 
@@ -33,8 +36,6 @@
     filters = next;
     const qs = filtersToParams(next).toString();
     const url = qs ? `?${qs}` : window.location.pathname;
-    // Only push a new history entry when the URL actually changes — avoids
-    // stacking identical entries for rapid chip toggles that net to no-op.
     if (url !== window.location.pathname + window.location.search) {
       history.pushState(null, '', url);
     }
@@ -45,7 +46,7 @@
 </script>
 
 <div class="home-app">
-  <Filters {filters} {allTags} {yearMin} {yearMax} onChange={setFilters} />
+  <Filters {filters} {slhOptions} {yearMin} {yearMax} onChange={setFilters} />
   <div class="main">
     <Map {slaughterhouses} {visibleCaseNrs} {base} />
     <CaseList cases={filteredCases} {slaughterhouses} {base} />

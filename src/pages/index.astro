@@ -5,7 +5,6 @@ import { loadData } from '../lib/data';
 import { BASE as base, siteStats } from '../lib/site';
 
 const { slaughterhouses, cases } = loadData();
-const allTags = Array.from(new Set(cases.flatMap(c => c.ernst_tags))).sort();
 const { caseCount, slhCount, yearMin, yearMax } = siteStats();
 ---
 <Layout title="Kaart">
@@ -15,7 +14,7 @@ const { caseCount, slhCount, yearMin, yearMax } = siteStats();
     Klik een pin voor details, of filter via de zijbalk.
     Zie <a href={`${base}/over/`}>Over de data</a> voor methodologie.
   </p>
-  <HomeApp client:only="svelte" {slaughterhouses} {cases} {allTags} {yearMin} {yearMax} {base} />
+  <HomeApp client:only="svelte" {slaughterhouses} {cases} {yearMin} {yearMax} {base} />
 </Layout>
 
 <style>
