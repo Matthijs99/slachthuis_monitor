@@ -1,22 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import HomeApp from '../components/HomeApp.svelte';
-import { loadData } from '../lib/data';
+import Story from '../components/Story.svelte';
+import StoryStep from '../components/StoryStep.svelte';
+import { loadData, formatEUR } from '../lib/data';
 import { BASE as base, siteStats } from '../lib/site';
+import { siteStops, finesSummary, storyYears } from '../lib/story';
 
 const { slaughterhouses, cases } = loadData();
-const { caseCount, slhCount, yearMin, yearMax } = siteStats();
+const stops = siteStops();
+const fines = finesSummary();
+const { yearMin, yearMax } = storyYears();
+const { caseCount, slhCount } = siteStats();
 ---
-<Layout title="Kaart">
-  <p class="intro">
-    Visualisatie van <strong>{caseCount}</strong> NVWA-bevindingen bij
-    <strong>{slhCount}</strong> Nederlandse roodvleesslachthuizen ({yearMin}–{yearMax}).
-    Klik een pin voor details, of filter via de zijbalk.
-    Zie <a href={`${base}/over/`}>Over de data</a> voor methodologie.
-  </p>
-  <HomeApp client:only="svelte" {slaughterhouses} {cases} {yearMin} {yearMax} {base} />
+<Layout title="Een rondgang langs de slachthuizen">
+  <section class="hook">
+    <h1>Een rondgang langs de slachthuizen</h1>
+    <p class="lede">
+      Tussen {yearMin} en {yearMax} legde de NVWA <strong>{caseCount} bevindingen</strong> vast bij
+      <strong>{slhCount} Nederlandse roodvleesslachthuizen</strong>, samen goed voor
+      <strong>{formatEUR(fines.totalCents)}</strong> aan boetes. Eén bedrijf is goed voor {stops[0].caseCount}
+      ervan. Scroll mee langs de meest gedocumenteerde locaties.
+    </p>
+    <p class="note">Let op: deze pagina citeert letterlijke NVWA-bevindingen met expliciete beschrijvingen van dierenleed.</p>
+  </section>
+
+  <Story client:only="svelte" siteStops={stops} {fines} {slaughterhouses} {cases} {yearMin} {yearMax} {base} />
+
+  <div class="static-article">
+    {stops.map((stop, i) => (
+      <StoryStep stop={stop} index={i} total={stops.length} active={true} />
+    ))}
+    <p class="static-link"><a href={`${base}/over/`}>Over de data &rarr;</a></p>
+  </div>
 </Layout>
 
 <style>
-  .intro { color: var(--c-text-soft); margin: 0 0 1.25rem; max-width: 70ch; }
+  .hook { max-width: 42rem; margin: 2rem auto 1rem; }
+  .hook h1 { font-size: 2.1rem; line-height: 1.1; }
+  .lede { font-size: 1.2rem; color: var(--c-text-soft); }
+  .note { font-size: 0.85rem; color: var(--c-muted-soft); border-left: 3px solid var(--c-border-strong); padding-left: 0.8rem; }
+  .static-article { max-width: 42rem; margin: 0 auto; }
+  .static-link { margin: 2rem 0; }
 </style>
