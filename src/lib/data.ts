@@ -15,6 +15,7 @@ export const SOURCE_REPO_URL = 'https://github.com/Matthijs99/slachthuis_monitor
 
 export type Case = {
   nr: number;
+  slug: string;           // slug of the slaughterhouse this case belongs to
   rapport_nr: string | null;
   datum: string;
   jaar: number | null;
@@ -134,6 +135,7 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
     }
     bySlh.get(key)!.cases.push({
       nr: b.nr,
+      slug: '',
       rapport_nr: b.rapport_nr,
       datum: b.datum,
       jaar: extractYear(b.datum),
@@ -174,6 +176,11 @@ export function loadData(): { slaughterhouses: Slaughterhouse[]; cases: Case[] }
     while (assignedSlugs.has(`${s.slug}-${n}`)) n++;
     s.slug = `${s.slug}-${n}`;
     assignedSlugs.add(s.slug);
+  }
+
+  // Stamp each case with its (now-final) slaughterhouse slug.
+  for (const s of bySlh.values()) {
+    for (const c of s.cases) c.slug = s.slug;
   }
 
   const slaughterhouses = Array.from(bySlh.values()).sort((a, b) => a.naam.localeCompare(b.naam, 'nl'));
