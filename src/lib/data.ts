@@ -1,13 +1,17 @@
 import boetes from '../../data/boetes.json';
 import geocoded from '../../data/geocoded.json';
 import pagesData from '../../data/pages.json';
+import type { Ernst } from './ernst';
 
-// The official public WOO-besluit this dataset is extracted from.
-// >>> Replace with the canonical rijksoverheid.nl / nvwa.nl URL. <<<
+// Re-exported for back-compat: the canonical definition now lives in ./ernst.
+export type { Ernst } from './ernst';
+
+// The official public WOO-besluit this dataset is extracted from, served as an
+// inline PDF by open.overheid.nl. Kept as the direct attachment URL (not an HTML
+// landing page) so the per-case `#page=N` deep links in slachthuis/[slug].astro
+// resolve in the browser's PDF viewer.
 export const SOURCE_DOCUMENT_URL = 'https://open.overheid.nl/overheid/openbaarmakingen/api/v0/attachment/e94307d9-9e5b-4ad2-a7c8-66b054155cfb';
 export const SOURCE_REPO_URL = 'https://github.com/Matthijs99/slachthuis_monitor';
-
-export type Ernst = 1 | 2 | 3 | 4;
 
 export type Case = {
   nr: number;

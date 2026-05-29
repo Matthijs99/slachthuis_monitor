@@ -1,20 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { loadData, SOURCE_DOCUMENT_URL, SOURCE_REPO_URL } from '../lib/data';
+import { SOURCE_DOCUMENT_URL, SOURCE_REPO_URL } from '../lib/data';
+import { BASE as base, siteStats } from '../lib/site';
 import Charts from '../components/Charts.astro';
 
-const { cases, slaughterhouses } = loadData();
-const years = cases.map(c => c.jaar).filter((y): y is number => y != null);
-const yearMin = Math.min(...years);
-const yearMax = Math.max(...years);
-const withFine = cases.filter(c => c.boetebedrag).length;
+const { caseCount, slhCount, yearMin, yearMax, withFine } = siteStats();
 ---
 <Layout title="Over de data">
   <h1>Over de data</h1>
 
   <p class="lede">
-    De Slachthuis Monitor toont <strong>{cases.length} bevindingen</strong> van de NVWA bij
-    <strong>{slaughterhouses.length} Nederlandse roodvleesslachthuizen</strong> over de periode
+    De Slachthuis Monitor toont <strong>{caseCount} bevindingen</strong> van de NVWA bij
+    <strong>{slhCount} Nederlandse roodvleesslachthuizen</strong> over de periode
     {yearMin}–{yearMax}. Hiervan zijn er {withFine} bestraft met een formele boete.
   </p>
 
@@ -52,7 +49,7 @@ const withFine = cases.filter(c => c.boetebedrag).length;
     <li>
       De ernst-tier is een welzijnsclassificatie en is bewust losgekoppeld van het boetebedrag. De
       boete reflecteert het juridisch oordeel van de NVWA; de ernst-tier reflecteert de impact op
-      het dier. Zie <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/ernst/`}>Ernstgradering</a>.
+      het dier. Zie <a href={`${base}/ernst/`}>Ernstgradering</a>.
     </li>
   </ul>
 
@@ -66,7 +63,7 @@ const withFine = cases.filter(c => c.boetebedrag).length;
 </Layout>
 
 <style>
-  .lede { font-size: 1.1rem; max-width: 70ch; color: #333; }
+  .lede { font-size: 1.1rem; max-width: 70ch; color: var(--c-text-soft); }
   h2 { margin-top: 2rem; }
   p, li { max-width: 70ch; }
 </style>

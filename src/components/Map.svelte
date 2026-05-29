@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import type { Slaughterhouse } from '../lib/data';
+  import { ERNST_COLORS, type Ernst } from '../lib/ernst';
 
   type Props = {
     slaughterhouses: Slaughterhouse[];
@@ -41,10 +42,7 @@
   });
 
   function severityColor(ernst: number): string {
-    const map: Record<number, string> = {
-      1: '#fde68a', 2: '#fb923c', 3: '#dc2626', 4: '#7f1d1d',
-    };
-    return map[ernst] ?? '#888888';
+    return ERNST_COLORS[ernst as Ernst] ?? '#888888';
   }
 
   function escapeHtml(s: string): string {
@@ -80,7 +78,7 @@
         <strong>${escapeHtml(s.naam)}</strong><br>
         ${voorheen}
         <span style="color:#555">${escapeHtml(s.postcode_plaats || '')}</span><br>
-        <strong>${visibleCases.length}</strong> ${visibleCases.length === 1 ? 'zaak' : 'zaken'} ·
+        <strong>${visibleCases.length}</strong> ${visibleCases.length === 1 ? 'bevinding' : 'bevindingen'} ·
         max ernst <strong>${maxErnst}</strong><br>
         <a href="${base}/slachthuis/${s.slug}/">Bekijk profiel &rarr;</a>
       `;
@@ -105,9 +103,9 @@
     width: 100%;
     height: 65vh;
     min-height: 420px;
-    border-radius: 6px;
+    border-radius: var(--radius);
     overflow: hidden;
-    border: 1px solid #e3e3e3;
+    border: 1px solid var(--c-border);
   }
   :global(.leaflet-popup-content) { font-family: inherit; font-size: 0.9rem; }
 </style>

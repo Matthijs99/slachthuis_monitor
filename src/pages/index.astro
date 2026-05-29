@@ -2,23 +2,22 @@
 import Layout from '../layouts/Layout.astro';
 import HomeApp from '../components/HomeApp.svelte';
 import { loadData } from '../lib/data';
+import { BASE as base, siteStats } from '../lib/site';
 
 const { slaughterhouses, cases } = loadData();
 const allTags = Array.from(new Set(cases.flatMap(c => c.ernst_tags))).sort();
-const years = cases.map(c => c.jaar).filter((y): y is number => y != null);
-const yearMin = Math.min(...years);
-const yearMax = Math.max(...years);
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { caseCount, slhCount, yearMin, yearMax } = siteStats();
 ---
 <Layout title="Kaart">
   <p class="intro">
-    Visualisatie van <strong>{cases.length}</strong> NVWA-bevindingen bij Nederlandse
-    roodvleesslachthuizen ({yearMin}–{yearMax}). Klik een pin voor details, of filter via de zijbalk.
+    Visualisatie van <strong>{caseCount}</strong> NVWA-bevindingen bij
+    <strong>{slhCount}</strong> Nederlandse roodvleesslachthuizen ({yearMin}–{yearMax}).
+    Klik een pin voor details, of filter via de zijbalk.
     Zie <a href={`${base}/over/`}>Over de data</a> voor methodologie.
   </p>
   <HomeApp client:only="svelte" {slaughterhouses} {cases} {allTags} {yearMin} {yearMax} {base} />
 </Layout>
 
 <style>
-  .intro { color: #444; margin: 0 0 1.25rem; max-width: 70ch; }
+  .intro { color: var(--c-text-soft); margin: 0 0 1.25rem; max-width: 70ch; }
 </style>

@@ -1,5 +1,6 @@
 ---
 import { loadData, parseFineCents } from '../lib/data';
+import { ERNST_TIERS } from '../lib/ernst';
 
 const { slaughterhouses, cases } = loadData();
 
@@ -16,7 +17,7 @@ const finesPerSlh = slaughterhouses
 const maxFine = Math.max(...finesPerSlh.map(x => x.cents), 1);
 
 // Severity distribution
-const ernstCounts = [1, 2, 3, 4].map(n => ({ n, count: cases.filter(c => c.ernst === n).length }));
+const ernstCounts = ERNST_TIERS.map(n => ({ n, count: cases.filter(c => c.ernst === n).length }));
 const maxErnstCount = Math.max(...ernstCounts.map(x => x.count), 1);
 
 // Cases per year
@@ -74,17 +75,17 @@ const fmt = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR',
 <style>
   .charts { margin-top: 3rem; }
   .chart { margin-bottom: 2rem; }
-  .chart h3 { font-size: 1rem; margin-bottom: 0.6rem; color: #555; }
+  .chart h3 { font-size: 1rem; margin-bottom: 0.6rem; color: var(--c-muted); }
   .bars { display: grid; gap: 0.25rem; }
   .row { display: grid; grid-template-columns: 14rem 1fr 5rem; gap: 0.5rem; align-items: center; font-size: 0.9rem; }
-  .label { color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .bar-wrap { background: #f0f0f0; height: 18px; border-radius: 3px; overflow: hidden; }
-  .bar { height: 100%; background: #7f1d1d; }
-  .bar.ernst-1 { background: #fde68a; }
-  .bar.ernst-2 { background: #fb923c; }
-  .bar.ernst-3 { background: #dc2626; }
-  .bar.ernst-4 { background: #7f1d1d; }
-  .value { text-align: right; color: #555; font-variant-numeric: tabular-nums; }
+  .label { color: var(--c-text-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-wrap { background: var(--c-surface-hover); height: 18px; border-radius: var(--radius); overflow: hidden; }
+  .bar { height: 100%; background: var(--c-accent); }
+  .bar.ernst-1 { background: var(--c-ernst-1); }
+  .bar.ernst-2 { background: var(--c-ernst-2); }
+  .bar.ernst-3 { background: var(--c-ernst-3); }
+  .bar.ernst-4 { background: var(--c-ernst-4); }
+  .value { text-align: right; color: var(--c-muted); font-variant-numeric: tabular-nums; }
   @media (max-width: 700px) {
     .row { grid-template-columns: 10rem 1fr 4rem; font-size: 0.85rem; }
   }

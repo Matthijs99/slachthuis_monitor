@@ -1,12 +1,12 @@
 ---
 import '../styles/global.css';
 import { SOURCE_DOCUMENT_URL, SOURCE_REPO_URL } from '../lib/data';
+import { BASE as base } from '../lib/site';
 
 type Props = { title: string; description?: string };
 const { title, description } = Astro.props;
 const META_DESCRIPTION = description ??
   'Interactieve kaart van NVWA-bevindingen bij Nederlandse roodvleesslachthuizen (2017–2023): boetes, ernstgradering en context per slachthuis.';
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <!doctype html>
 <html lang="nl">

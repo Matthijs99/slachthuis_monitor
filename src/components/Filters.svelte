@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Filters } from '../lib/filters';
+  import { ERNST_TIERS, ERNST_LABELS } from '../lib/ernst';
 
   type Props = {
     filters: Filters;
@@ -10,10 +11,6 @@
   };
 
   let { filters, allTags, yearMin, yearMax, onChange }: Props = $props();
-
-  const ERNST_LABELS: Record<number, string> = {
-    1: 'Laag', 2: 'Midden', 3: 'Hoog', 4: 'Zeer hoog',
-  };
 
   function toggleErnst(n: number) {
     const next = new Set(filters.ernst);
@@ -39,7 +36,7 @@
 <aside class="filters">
   <h3>Ernst</h3>
   <div class="chips">
-    {#each [1, 2, 3, 4] as n}
+    {#each ERNST_TIERS as n}
       <button class="chip ernst-{n}" class:active={filters.ernst.has(n)} onclick={() => toggleErnst(n)}>
         {n} · {ERNST_LABELS[n]}
       </button>
@@ -71,22 +68,22 @@
 
 <style>
   .filters { padding: 0.25rem; }
-  h3 { margin: 1.2rem 0 0.4rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #555; }
+  h3 { margin: 1.2rem 0 0.4rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--c-muted); }
   h3:first-of-type { margin-top: 0; }
   .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
   .chip {
-    border: 1px solid #ccc; background: white; padding: 0.3rem 0.65rem;
-    border-radius: 999px; cursor: pointer; font-size: 0.85rem; font-family: inherit;
+    border: 1px solid var(--c-border-strong); background: var(--c-bg); padding: 0.3rem 0.65rem;
+    border-radius: var(--radius-pill); cursor: pointer; font-size: 0.85rem; font-family: inherit;
   }
-  .chip:hover { border-color: #888; }
+  .chip:hover { border-color: var(--c-muted-soft); }
   .chip.active { background: #222; color: white; border-color: #222; }
-  .chip.ernst-1.active { background: #fde68a; color: #222; border-color: #ca8a04; }
-  .chip.ernst-2.active { background: #fb923c; color: white; border-color: #c2410c; }
-  .chip.ernst-3.active { background: #dc2626; color: white; border-color: #991b1b; }
-  .chip.ernst-4.active { background: #7f1d1d; color: white; border-color: #450a0a; }
+  .chip.ernst-1.active { background: var(--c-ernst-1); color: #222; border-color: #ca8a04; }
+  .chip.ernst-2.active { background: var(--c-ernst-2); color: white; border-color: #c2410c; }
+  .chip.ernst-3.active { background: var(--c-ernst-3); color: white; border-color: #991b1b; }
+  .chip.ernst-4.active { background: var(--c-ernst-4); color: white; border-color: #450a0a; }
   .chip.tag { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.78rem; }
   .years { display: flex; align-items: center; gap: 0.5rem; }
-  .years input { width: 5rem; padding: 0.3rem 0.4rem; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; }
-  .reset { margin-top: 1.5rem; background: none; border: 1px solid #888; padding: 0.4rem 0.8rem; cursor: pointer; font-family: inherit; }
-  .reset:hover { background: #f5f5f5; }
+  .years input { width: 5rem; padding: 0.3rem 0.4rem; border: 1px solid var(--c-border-strong); border-radius: var(--radius); font-family: inherit; }
+  .reset { margin-top: 1.5rem; background: none; border: 1px solid var(--c-muted-soft); padding: 0.4rem 0.8rem; cursor: pointer; font-family: inherit; border-radius: var(--radius); }
+  .reset:hover { background: var(--c-surface); }
 </style>
