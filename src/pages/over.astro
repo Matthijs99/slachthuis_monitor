@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { SOURCE_DOCUMENT_URL, SOURCE_REPO_URL } from '../lib/data';
-import { BASE as base, siteStats } from '../lib/site';
+import { siteStats } from '../lib/site';
 import Charts from '../components/Charts.astro';
 
 const { caseCount, slhCount, yearMin, yearMax, withFine } = siteStats();
@@ -25,13 +25,13 @@ const { caseCount, slhCount, yearMin, yearMax, withFine } = siteStats();
     <a href={SOURCE_DOCUMENT_URL} target="_blank" rel="noopener">Bekijk het volledige besluit</a>.
   </p>
 
-  <h2>Werkwijze</h2>
+  <h2>Hoe de data is samengesteld</h2>
   <p>
-    Het <a href={SOURCE_DOCUMENT_URL} target="_blank" rel="noopener">bron-PDF</a> (987 pagina's) is omgezet naar platte tekst en met een Python-script geparseerd. Per
-    geval zijn vastgelegd: het slachthuis (naam + adres), de datum, de letterlijke bevinding, de
-    boete (indien opgelegd), de eventuele reactie van het slachthuis, een korte Nederlandstalige
-    samenvatting, een welzijnsernst-classificatie (1–4) en passende tags. Het geocoderen van adressen
-    is gedaan via de PDOK Locatieserver. Alle data en code zijn open source.
+    Het <a href={SOURCE_DOCUMENT_URL} target="_blank" rel="noopener">bron-PDF</a> (987 pagina's) is omgezet naar
+    platte tekst en met een Python-script geparseerd. Per geval zijn de feitelijke gegevens uit het document
+    vastgelegd: het slachthuis (naam + adres), de datum, de letterlijke bevinding, de boete (indien opgelegd),
+    de eventuele reactie van het slachthuis, het NVWA-rapportnummer en de bronpagina. Adressen zijn gegeocodeerd
+    via de PDOK Locatieserver. Alle data en code zijn open source.
   </p>
 
   <h2>Bekende beperkingen</h2>
@@ -45,11 +45,6 @@ const { caseCount, slhCount, yearMin, yearMax, withFine } = siteStats();
     <li>
       De 11 Schriftelijke Waarschuwingen zijn (nog) niet opgenomen in deze visualisatie. Dat zijn
       waarschuwingen zonder boete, die wel inzicht geven in lichtere overtredingen.
-    </li>
-    <li>
-      De ernst-tier is een welzijnsclassificatie en is bewust losgekoppeld van het boetebedrag. De
-      boete reflecteert het juridisch oordeel van de NVWA; de ernst-tier reflecteert de impact op
-      het dier. Zie <a href={`${base}/ernst/`}>Ernstgradering</a>.
     </li>
   </ul>
 
